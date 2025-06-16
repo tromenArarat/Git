@@ -1,21 +1,21 @@
-Repositorio de pruebas
-
+PASOS actualizar repositorios desde ssh
 
 Step 1: Set Up SSH Access for GitHub
 
 a-Generate an SSH Key (if not done already):
-ssh-keygen -t ed25519 -C "your_email@example.com"
+	ssh-keygen -t ed25519 -C "your_email@example.com"
 
 b-Add the SSH Key to the SSH Agent:
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
+	eval "$(ssh-agent -s)"
+	ssh-add ~/.ssh/id_ed25519
 
 c-Add the SSH Key to Your GitHub Account:
 	
-	1-Copy the public key to your clipboard:
+
+1-Copy the public key to your clipboard:
 	cat ~/.ssh/id_ed25519.pub
 
-	2-Go to GitHub > Settings > SSH and GPG keys > New SSH key, and paste the key.
+2-Go to GitHub > Settings > SSH and GPG keys > New SSH key, and paste the key.
 
 d- Verify SSH Connection to GitHub:
 
@@ -28,8 +28,8 @@ d- Verify SSH Connection to GitHub:
 Step 2: Clone the Repository Locally (if not already done)
 
 a-Use SSH to clone the repository if you haven't yet:
-git clone git@github.com:username/repository.git
-cd repository
+	git clone git@github.com:username/repository.git
+	cd repository
 
 
 Step 3: Copy Your Local Files to the Repository
