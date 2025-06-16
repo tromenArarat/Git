@@ -1,6 +1,6 @@
-### PASOS actualizar repositorios desde ssh
+## PASOS actualizar repositorios desde ssh
 
-#### Step 1: Set Up SSH Access for GitHub
+### Step 1: Set Up SSH Access for GitHub
 
 a-Generate an SSH Key (if not done already):
 	
@@ -28,7 +28,7 @@ d- Verify SSH Connection to GitHub:
 	Hi username! You've successfully authenticated, but GitHub does not provide shell access.
 
 
-#### Step 2: Clone the Repository Locally (if not already done)
+### Step 2: Clone the Repository Locally (if not already done)
 
 a-Use SSH to clone the repository if you haven't yet:
 	
@@ -36,7 +36,7 @@ a-Use SSH to clone the repository if you haven't yet:
 	cd repository
 
 
-Step 3: Copy Your Local Files to the Repository
+### Step 3: Copy Your Local Files to the Repository
 
 a-Copy the files you want to update into the local repository directory:
 cp -r /path/to/local/files/* /path/to/repository/
