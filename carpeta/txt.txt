@@ -1,1 +1,11 @@
 esto es una prueba
+
+MOVER FICHERO
+mv ~/Documentos/carpetaDeOrigen ~/Repositorios/carpetaDeDestino
+
+RENOMBRAR DIRECTORIO
+mv ~/nombreOriginal ~/nombreNuevo
+
+
+
+
