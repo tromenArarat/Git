@@ -39,13 +39,16 @@ a-Use SSH to clone the repository if you haven't yet:
 ### Step 3: Copy Your Local Files to the Repository
 
 a-Copy the files you want to update into the local repository directory:
-cp -r /path/to/local/files/* /path/to/repository/
+
+	cp -r /path/to/local/files/* /path/to/repository/
 
 b- Check the repository's status to confirm the added/updated files:
-git status
+
+	git status
 
 
-Step 4: Commit and Push the Changes
-git add .
-git commit -m "Updated files with new content"
-git push origin main
+### Step 4: Commit and Push the Changes
+
+	git add .
+	git commit -m "Updated files with new content"
+	git push origin main
