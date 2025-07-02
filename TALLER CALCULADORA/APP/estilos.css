@@ -1,0 +1,181 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    width: fit-content;
+}
+
+#item1 {
+    background-color: #e0e0e0;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.button-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-around;
+    gap: 8px;
+}
+
+/* Estilos para filas de 6 botones */
+.button-row-6 {
+    width: 100%;
+}
+
+/* Estilos para filas de 5 botones */
+.button-row-5 {
+    width: 100%;
+}
+
+.button {
+    border: 1px solid #888;
+    text-align: center;
+    vertical-align: middle;
+    height: 40px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 5px;
+}
+
+/* Botones de 6 columnas */
+.button-row-6 .circular-button {
+    top:30px;
+}
+
+.button-row-6 .button {
+    width: 45px;
+}
+
+
+/* Botones de 5 columnas (más grandes) */
+.button-row-5 .button {
+    width: 60px;
+}
+
+.button:hover {
+    background-color: #e8e8e8;
+    transform: translateY(-2px);
+}
+
+.button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Botones circulares en la primera fila */
+.circular-button {
+    border-radius: 50%;
+    width: 40px !important;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    justify-content:flex-end;
+    padding-bottom: 2px;
+}
+
+.circular-button .button-label {
+    position: absolute;
+    top: -15px;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+/* Estilo para botones especiales */
+.top-button {
+    background-color: #d0d0d0;
+}
+
+.power-button {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+/* Botones de operaciones */
+.operation-button {
+    background-color: #ffa500;
+    color: white;
+}
+
+/* Botón igual */
+.equals-button {
+    background-color: #4CAF50;
+}
+
+/* Botones numéricos */
+.number-button {
+    background-color: white;
+}
+
+/* Botón de grados/minutos/segundos */
+.degrees-button {
+    font-size: 22px;
+}
+
+/* Pantalla */
+#item2 {
+    background-color: #e6f7e6;
+    height: 80px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: right;
+    font-size: 24px;
+    font-family: 'Digital', monospace;
+    border: 1px solid #aaa;
+    overflow: hidden;
+}
+
+/* Flechas direccionales 
+.arrow-button {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.arrow-up::before {
+    content: "↑";
+}
+
+.arrow-left::before {
+    content: "←";
+}
+
+.arrow-right::before {
+    content: "→";
+}
+
+.arrow-down::before {
+    content: "↓";
+}
+
+*/
