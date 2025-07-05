@@ -1,120 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taller Calculadora Científica</title>
     <link rel="stylesheet" href="estilos.css">
 </head>
+
 <body>
     <div class="container">
-      <div id="item2">0</div>
-      <div id="item1">
-        <div class="button-grid">
-            <!-- Fila 1 (6 botones circulares) -->
-            <div class="button-row button-row-6">
-                <div id='shift' class="button circular-button top-button">
-                    <span class="button-label">SHIFT</span>
+        <div id="item2">|</div>
+        <div id="item1">
+            <div class="button-grid">
+                <!-- Fila 1 (6 botones circulares) -->
+                <div class="button-row-circ">
+                    <div id='shift' class="button circular-button top-button">
+                        <span class="button-label">SHIFT</span>
+                    </div>
+                    <div id='alpha' class="button circular-button top-button">
+                        <span class="button-label">ALPHA</span>
+                    </div>
+                    <div id='modo' class="button circular-button top-button">
+                        <span id='MODO' class="button-label">MODO</span>
+                    </div>
+                    <div id='enc' class="button circular-button power-button">
+                        <span class="button-label">ENC</span>
+                    </div>
                 </div>
-                <div id='alpha' class="button circular-button top-button">
-                    <span class="button-label">ALPHA</span>
+
+
+                <!-- Flechas en forma de cruz -->
+                <div class="cruz">
+                    <div class="button arrow-button arrow-up"></div>
+                    <div class="button arrow-button arrow-left"></div>
+                    <div class="button arrow-button arrow-right"></div>
+                    <div class="button arrow-button arrow-down"></div>
                 </div>
-                <div class="button circular-button top-button">
-                    <span id='MODO' class="button-label">MODO</span>
+
+                <!-- Fila 3 (6 botones) -->
+                <div class="button-row button-row-6">
+                    <div id='CALC' class="button">CALC</div>
+                    <div id='∫' class="button">∫</div>
+                    <div style="width: 50px; visibility: hidden;"></div>
+                    <div style="width: 50px; visibility: hidden;"></div>
+                    <div id='x⁻¹' class="button">x⁻¹</div>
+                    <div id='log' class="button">log</div>
                 </div>
-                <div class="button circular-button power-button">
-                    <span class="button-label">ON</span>
+
+                <!-- Fila 4 (6 botones) -->
+                <div class="button-row button-row-6">
+                    <div id='ᵇ⁄c' class="button">ᵇ⁄c</div>
+                    <div id='√' class="button">√</div>
+                    <div id='x²' class="button">x²</div>
+                    <div id='^' class="button">^</div>
+                    <div id='log' class="button">log</div>
+                    <div id='ln' class="button">ln</div>
                 </div>
-            </div>
-            
-            <!-- Fila 2 (solo flechas) -->
-            <div class="button-row button-row-6">
-                <div style="width: 50px; visibility: hidden;"></div> <!-- Espacio vacío -->
-                <div style="width: 50px; visibility: hidden;"></div> <!-- Espacio vacío -->
-                <div style="width: 50px; visibility: hidden;" class="button arrow-button arrow-left"></div>
-                <div style="width: 50px; visibility: hidden;" class="button arrow-button arrow-right"></div>
-                <div style="width: 50px; visibility: hidden;"></div> <!-- Espacio vacío -->
-                <div style="width: 50px; visibility: hidden;"></div> <!-- Espacio vacío -->
-            </div>
-            
-            <!-- Fila 3 (6 botones) -->
-            <div class="button-row button-row-6">
-                <div id='CALC' class="button">CALC</div>
-                <div id='∫' class="button">∫</div>
-                <div style="width: 50px; visibility: hidden;" class="button arrow-button arrow-up"></div>
-                <div style="width: 50px; visibility: hidden;"class="button arrow-button arrow-down"></div>
-                <div id='x⁻¹' class="button">x⁻¹</div>
-                <div id='log' class="button">log</div>
-            </div>
-            
-            <!-- Fila 4 (6 botones) -->
-            <div class="button-row button-row-6">
-                <div id='ᵇ⁄c' class="button">ᵇ⁄c</div>
-                <div id='√' class="button">√</div>
-                <div id='x²' class="button">x²</div>
-                <div id='^' class="button">^</div>
-                <div id='log' class="button">log</div>
-                <div id='ln' class="button">ln</div>
-            </div>
-            
-            <!-- Fila 5 (6 botones) -->
-            <div class="button-row button-row-6">
-                <div id='(-)' class="button">(-)</div>
-                <div id='grados' class="button degrees-button">grados</div>
-                <div id='hyp' class="button">hyp</div>
-                <div id='sin' class="button">sin</div>
-                <div id='cos' class="button">cos</div>
-                <div id='tan' class="button">tan</div>
-            </div>
-            
-            <!-- Fila 6 (6 botones) -->
-            <div class="button-row button-row-6">
-                <div id='RCL' class="button">RCL</div>
-                <div id='ENG' class="button">ENG</div>
-                <div id='(' class="button">(</div>
-                <div id=')' class="button">)</div>
-                <div id='S⇄D' class="button">S⇄D</div>
-                <div id='M+' class="button">M+</div>
-            </div>
-            
-            <!-- Fila 7 (5 botones) -->
-            <div class="button-row button-row-5">
-                <div id="7" class="button number-button">7</div>
-                <div id="8" class="button number-button">8</div>
-                <div id="9" class="button number-button">9</div>
-                <div id="DEL" class="button operation-button">DEL</div>
-                <div id="AC" class="button operation-button">AC</div>
-            </div>
-            
-            <!-- Fila 8 (5 botones) -->
-            <div class="button-row button-row-5">
-                <div id="4" class="button number-button">4</div>
-                <div id="5" class="button number-button">5</div>
-                <div id="6" class="button number-button">6</div>
-                <div id="×" class="button operation-button">×</div>
-                <div id="÷" class="button operation-button">÷</div>
-            </div>
-            
-            <!-- Fila 9 (5 botones) -->
-            <div class="button-row button-row-5">
-                <div id="1" class="button number-button">1</div>
-                <div id="2" class="button number-button">2</div>
-                <div id="3" class="button number-button">3</div>
-                <div id="+" class="button operation-button">+</div>
-                <div id="-" class="button operation-button">-</div>
-            </div>
-            
-            <!-- Fila 10 (5 botones) -->
-            <div class="button-row button-row-5">
-                <div class="button number-button">0</div>
-                <div id='.' class="button number-button">.</div>
-                <div id='×10ˣ' class="button">×10ˣ</div>
-                <div id='Ans' class="button">Ans</div>
-                <div class="button equals-button">=</div>
+
+                <!-- Fila 5 (6 botones) -->
+                <div class="button-row button-row-6">
+                    <div id='(-)' class="button">(-)</div>
+                    <div id='grados' class="button degrees-button">°'''</div>
+                    <div id='hyp' class="button">hyp</div>
+                    <div id='sin' class="button">sin</div>
+                    <div id='cos' class="button">cos</div>
+                    <div id='tan' class="button">tan</div>
+                </div>
+
+                <!-- Fila 6 (6 botones) -->
+                <div class="button-row button-row-6">
+                    <div id='RCL' class="button">RCL</div>
+                    <div id='ENG' class="button">ENG</div>
+                    <div id='(' class="button">(</div>
+                    <div id=')' class="button">)</div>
+                    <div id='S⇄D' class="button">S⇄D</div>
+                    <div id='M+' class="button">M+</div>
+                </div>
+
+                <!-- Fila 7 (5 botones) -->
+                <div class="button-row button-row-5">
+                    <div id="7" class="button number-button">7</div>
+                    <div id="8" class="button number-button">8</div>
+                    <div id="9" class="button number-button">9</div>
+                    <div id="DEL" class="button operation-button">DEL</div>
+                    <div id="AC" class="button operation-button">AC</div>
+                </div>
+
+                <!-- Fila 8 (5 botones) -->
+                <div class="button-row button-row-5">
+                    <div id="4" class="button number-button">4</div>
+                    <div id="5" class="button number-button">5</div>
+                    <div id="6" class="button number-button">6</div>
+                    <div id="×" class="button operation-button">×</div>
+                    <div id="÷" class="button operation-button">÷</div>
+                </div>
+
+                <!-- Fila 9 (5 botones) -->
+                <div class="button-row button-row-5">
+                    <div id="1" class="button number-button">1</div>
+                    <div id="2" class="button number-button">2</div>
+                    <div id="3" class="button number-button">3</div>
+                    <div id="+" class="button operation-button">+</div>
+                    <div id="-" class="button operation-button">-</div>
+                </div>
+
+                <!-- Fila 10 (5 botones) -->
+                <div class="button-row button-row-5">
+                    <div class="button number-button">0</div>
+                    <div id='.' class="button number-button">.</div>
+                    <div id='×10ˣ' class="button">×10ˣ</div>
+                    <div id='Ans' class="button">Ans</div>
+                    <div class="button equals-button">=</div>
+                </div>
             </div>
         </div>
-      </div>
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>

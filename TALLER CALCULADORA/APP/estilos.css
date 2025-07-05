@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: Courier, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,22 +12,27 @@ body {
     display: flex;
     flex-direction: column;
     background-color: #333;
-    padding: 20px;
+    padding: 25px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    width: fit-content;
+    width:fit-content;
 }
 
 #item1 {
     background-color: #e0e0e0;
-    padding: 15px;
-    border-radius: 8px;
+    padding: 20px;
+    border-radius: 10px;
+    position:relative;
+    padding-top: 0;
 }
 
 .button-grid {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    position:relative;
+    top:-45px;
+    height: 450px;
 }
 
 .button-row {
@@ -36,9 +41,15 @@ body {
     gap: 8px;
 }
 
+.button-row-circ{
+    display: flex;
+    justify-content: space-between;
+}
+
 /* Estilos para filas de 6 botones */
 .button-row-6 {
     width: 100%;
+    margin-bottom: 5px;
 }
 
 /* Estilos para filas de 5 botones */
@@ -50,11 +61,10 @@ body {
     border: 1px solid #888;
     text-align: center;
     vertical-align: middle;
-    height: 40px;
-    font-size: 14px;
-    font-weight: bold;
+    height: 35px;
+    font-size: 18px;
     border-radius: 4px;
-    background-color: #f8f8f8;
+    background-color: #686767e5;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: all 0.2s;
@@ -63,18 +73,43 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 0 5px;
 }
 
 /* Botones de 6 columnas */
-.button-row-6 .circular-button {
-    top:30px;
-}
-
 .button-row-6 .button {
     width: 45px;
 }
 
+.circular-button {
+    border-radius: 100%;
+    height: 30px;
+    width: 30px;
+    position: relative;
+    top:70px;
+}
+
+#alpha{
+    left:-45px;
+}
+
+#modo{
+    right:-45px;
+}
+#enc{
+    right: 5px;
+}
+#shift{
+    left: 5px;
+}
+
+.circular-button .button-label {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    white-space: nowrap;
+}
 
 /* Botones de 5 columnas (más grandes) */
 .button-row-5 .button {
@@ -82,7 +117,7 @@ body {
 }
 
 .button:hover {
-    background-color: #e8e8e8;
+    background-color: #969393;
     transform: translateY(-2px);
 }
 
@@ -91,24 +126,86 @@ body {
     box-shadow: none;
 }
 
-/* Botones circulares en la primera fila */
-.circular-button {
-    border-radius: 50%;
-    width: 40px !important;
-    height: 40px;
-    padding: 0;
-    display: inline-flex;
-    justify-content:flex-end;
-    padding-bottom: 2px;
+
+
+/* Estilos para la cruz de flechas */
+.cruz {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0px; /* Reducimos el espacio entre flechas */
+    width: 100px; /* Hacemos el contenedor más pequeño */
+    height: 100px;
+    margin: 0 auto; /* Centramos horizontalmente */
+    position: relative;
+    top:15px;
 }
 
-.circular-button .button-label {
-    position: absolute;
-    top: -15px;
-    font-size: 10px;
-    white-space: nowrap;
+.cruz .arrow-button {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #686767e5;
+    border: 1px solid #888;
+    border-radius: 4px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    top: 35px;
 }
 
+.cruz .arrow-button:hover {
+    background-color: #969393;
+}
+
+/* Posicionamiento de las flechas */
+.arrow-up {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.arrow-left {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.arrow-right {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.arrow-down {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+/* Estilos para los íconos de flecha (usando pseudo-elementos) */
+.arrow-up::before {
+    content: "▲";
+    font-size: 20px; /* Tamaño reducido */
+    color: white;
+}
+
+.arrow-left::before {
+    content: "◀";
+    font-size: 16px;
+    color: white;
+}
+
+.arrow-right::before {
+    content: "▶";
+    font-size: 16px;
+    color: white;
+}
+
+.arrow-down::before {
+    content: "▼";
+    font-size: 20px;
+    color: white;
+}
 /* Estilo para botones especiales */
 .top-button {
     background-color: #d0d0d0;
@@ -116,7 +213,7 @@ body {
 
 .power-button {
     background-color: #ff6b6b;
-    color: white;
+    color: rgb(11, 11, 11);
 }
 
 /* Botones de operaciones */
@@ -133,49 +230,24 @@ body {
 /* Botones numéricos */
 .number-button {
     background-color: white;
+    font-size:x-large;
 }
 
 /* Botón de grados/minutos/segundos */
 .degrees-button {
-    font-size: 12px;
+    font-size: 16px;
 }
 
 /* Pantalla */
 #item2 {
     background-color: #e6f7e6;
-    height: 80px;
+    height: 110px;
     margin-bottom: 15px;
     border-radius: 5px;
     padding: 10px;
-    text-align: right;
-    font-size: 24px;
+    text-align: left;
+    font-size: 30px;
     font-family: 'Digital', monospace;
     border: 1px solid #aaa;
     overflow: hidden;
 }
-
-/* Flechas direccionales 
-.arrow-button {
-    font-size: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.arrow-up::before {
-    content: "↑";
-}
-
-.arrow-left::before {
-    content: "←";
-}
-
-.arrow-right::before {
-    content: "→";
-}
-
-.arrow-down::before {
-    content: "↓";
-}
-
-*/
