@@ -18,6 +18,16 @@ body {
     width:fit-content;
 }
 
+.container2 {
+    display: flex;
+    background-color: #333;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    position:absolute;
+    height: 100px;
+}
+
 #item1 {
     background-color: #e0e0e0;
     padding: 20px;
@@ -181,6 +191,7 @@ body {
     grid-column: 2;
     grid-row: 3;
 }
+
 
 /* Estilos para los íconos de flecha (usando pseudo-elementos) */
 .arrow-up::before {
