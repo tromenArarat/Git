@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Juego de Correspondencia: Lenguajes y Paradigmas</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c2c 0%, #2a4a35 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-container {
+            max-width: 1400px;
+            width: 100%;
+            background: rgba(255,255,240,0.95);
+            border-radius: 48px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c5a2e;
+            margin: 0 0 8px 0;
+            font-size: 1.9rem;
+        }
+
+        .sub {
+            text-align: center;
+            color: #3a6b3f;
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #d4b483;
+        }
+
+        .card-header {
+            background: #f7e9cd;
+            padding: 12px 16px;
+            font-weight: bold;
+            font-size: 1rem;
+            border-bottom: 2px solid #e0c8a0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tipo-badge {
+            background: #2c5a2e;
+            color: white;
+            border-radius: 60px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+        }
+
+        .card-content {
+            padding: 18px;
+            flex-grow: 1;
+            background: #fffef7;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #1e2a1c;
+            max-height: 420px;
+            overflow-y: auto;
+        }
+
+        .card-content pre {
+            background: #f0f0e0;
+            padding: 10px;
+            border-radius: 16px;
+            overflow-x: auto;
+            font-size: 0.7rem;
+            font-family: 'Courier New', monospace;
+            margin: 0 0 10px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .codigo-img {
+            max-width: 100%;
+            border-radius: 16px;
+            border: 1px solid #ccc;
+        }
+
+        .info-line {
+            margin: 10px 0;
+        }
+
+        .separador {
+            border-top: 1px dashed #c0b080;
+            margin: 12px 0;
+        }
+
+        .glosario-container {
+            margin-top: 12px;
+            border-top: 1px dashed #c0b080;
+            padding-top: 10px;
+        }
+
+        .btn-glosario {
+            background-color: #4a7c59;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+
+        .glosario-texto {
+            background: #f5f0e0;
+            padding: 10px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            margin-top: 8px;
+            display: none;
+            border-left: 4px solid #4a7c59;
+        }
+
+        .glosario-texto.mostrar {
+            display: block;
+        }
+
+        .btn-descartar {
+            background-color: #b87333;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 0.9rem;
+            border-radius: 0 0 28px 28px;
+        }
+
+        .btn-descartar:hover {
+            background-color: #9b5e2c;
+        }
+
+        .control-panel {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .control-panel button {
+            background: #3c7a3e;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .control-panel button:hover {
+            background: #2a5e2c;
+        }
+
+        .reset-btn {
+            background: #a55233 !important;
+        }
+
+        .mensaje-area {
+            background: #e9f5e6;
+            border-radius: 40px;
+            padding: 15px 20px;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+            border-left: 8px solid #3c7a3e;
+        }
+
+        .exito {
+            background: #c8e6c0;
+            border-left-color: #2e7d32;
+            color: #1e4a1c;
+        }
+
+        .error {
+            background: #ffe1de;
+            border-left-color: #c23b22;
+            color: #8b2c1a;
+        }
+
+        .codigo-verif {
+            font-family: monospace;
+            background: #2d2d2d;
+            padding: 8px 16px;
+            display: inline-block;
+            border-radius: 60px;
+            color: #f5f5dc;
+            margin-top: 10px;
+        }
+
+        footer {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 20px;
+            color: #3b5a3a;
+        }
+    </style>
+</head>
+<body>
+<div class="game-container">
+    <h1>🐷 CHANCHO PROGRAMADOR</h1>
+    <div class="sub">📦 Arma el grupo correcto: Lenguaje + Código + Problema + Paradigma</div>
+
+    <div class="cards-grid" id="cardsGrid"></div>
+
+    <div class="control-panel">
+        <button id="verificarBtn">✅ VERIFICAR GRUPO</button>
+        <button id="resetBtn" class="reset-btn">🔄 REINICIAR JUEGO</button>
+    </div>
+
+    <div id="mensaje" class="mensaje-area">
+        💡 Descarta cartas hasta formar un grupo coherente. Luego verifica.
+    </div>
+    <footer>🔁 Cada descarte te da una carta nueva del mismo tipo.</footer>
+</div>
+
+<script>
+    // ======================== GLOSARIOS ========================
+    const GLOSARIOS = {
+        "BASIC": "📖 GLOSARIO BASIC:<br><br>• CLS → Limpia la pantalla<br>• PRINT → Muestra texto<br>• INPUT → Pide un valor al usuario<br>• INT() → Redondea hacia abajo<br>• ; → concatena en pantalla",
+        "PSEINT": "📖 GLOSARIO PSEINT:<br><br>• Algoritmo → Inicia el algoritmo<br>• Definir → Declara variables<br>• Leer → Entrada de datos<br>• Escribir → Salida de datos<br>• ← → Asignación<br>• ^ → Potencia<br>• FinAlgoritmo → Final",
+        "FORTRAN": "📖 GLOSARIO FORTRAN:<br><br>• REAL → Variable decimal<br>• SIN(), COS() → Funciones trigonométricas (radianes)<br>• ** → Eleva al cuadrado<br>• PRINT *, → Muestra en pantalla<br>• READ *, → Lee entrada",
+        "SQL": "📖 GLOSARIO SQL:<br><br>• SELECT → Elige columnas<br>• FROM → Tabla origen<br>• WHERE → Filtra filas<br>• BETWEEN... AND... → Rango inclusivo",
+        "PROLOG": "📖 GLOSARIO PROLOG:<br><br>• :- → 'si' (define regla)<br>• , → 'y' (conjunción)<br>• is → Evaluación matemática",
+        "SCRATCH": "📖 GLOSARIO SCRATCH:<br><br>• por siempre → Bucle infinito<br>• si → Condicional<br>• tecla presionada? → Sensor<br>• cambiar x/y → Movimiento",
+        "SMALLTALK": "📖 GLOSARIO SMALLTALK:<br><br>• := → Asignación<br>• ^ → Retorna<br>• ifTrue:ifFalse: → Condicional<br>• printString → Número a texto",
+        "JAVA": "📖 GLOSARIO JAVA:<br><br>• class → Plantilla de objetos<br>• private → Solo visible dentro de la clase<br>• public → Visible desde cualquier clase<br>• this. → Atributo del objeto actual<br>• return → Devuelve un valor"
+    };
+
+    // ======================== ÁMBITOS REALES ========================
+    const AMBITOS = {
+        "BASIC": "🎓 Educación<br>🖥️ Primeros microordenadores",
+        "PSEINT": "🎓 Enseñanza de programación<br>📊 Diagramas de flujo para procesos",
+        "FORTRAN": "🔬 Cálculo científico e ingenieril<br>📈 Simulaciones numéricas<br>🏆 Primer lenguaje de alto nivel para ingeniería",
+        "SQL": "🗄️ Gestión de bases de datos<br>🏛️ Consultas a catastro",
+        "PROLOG": "🤖 Inteligencia Artificial<br>🧠 Reglas de inferencia deductiva",
+        "SCRATCH": "🧩 Programación en bloques<br>🤖 Robótica inicial",
+        "SMALLTALK": "🎓 Entornos educativos<br>🎬 Primeras simulaciones de objetos",
+        "JAVA": "🏢 Aplicaciones empresariales<br>📱 Android"
+    };
+
+    // ======================== DATOS DE LENGUAJES ========================
+    const LENGUAJES = [
+        { nombre: "BASIC", grupoId: "BASIC", anio: "1964", paradigma: "Imperativo (Procedimental)", icono: "💾" },
+        { nombre: "PSEINT", grupoId: "PSEINT", anio: "2003", paradigma: "Educativo", icono: "📝" },
+        { nombre: "FORTRAN", grupoId: "FORTRAN", anio: "1957", paradigma: "Imperativo (Procedimental)", icono: "🔢" },
+        { nombre: "SQL", grupoId: "SQL", anio: "1974", paradigma: "Declarativo", icono: "🗃️" },
+        { nombre: "PROLOG", grupoId: "PROLOG", anio: "1972", paradigma: "Declarativo (Lógico)", icono: "🧩" },
+        { nombre: "SCRATCH", grupoId: "SCRATCH", anio: "2012", paradigma: "Educativo", icono: "🐱" },
+        { nombre: "SMALLTALK", grupoId: "SMALLTALK", anio: "1972", paradigma: "Orientado a Objetos", icono: "💬" },
+        { nombre: "JAVA", grupoId: "JAVA", anio: "1995", paradigma: "Orientado a Objetos", icono: "☕" }
+    ];
+
+    const PARADIGMA_POR_GRUPO = {
+        "BASIC": "Imperativo (Procedimental)",
+        "PSEINT": "Educativo",
+        "FORTRAN": "Imperativo (Procedimental)",
+        "SQL": "Declarativo",
+        "PROLOG": "Declarativo (Lógico)",
+        "SCRATCH": "Educativo",
+        "SMALLTALK": "Orientado a Objetos",
+        "JAVA": "Orientado a Objetos"
+    };
+
+    // ======================== CÓDIGOS Y PROBLEMAS ========================
+    function getCodigoYProblema(grupoId) {
+        const mapping = {
+            "BASIC": {
+                codigo: `10 CLS
+20 PRINT "CONVERSOR DE METROS A PIES Y PULGADAS"
+30 INPUT "INGRESE METROS: "; M
+40 PIES_POR_METRO = 3.28084
+50 PIES_TOTALES = M * PIES_POR_METRO
+60 PIES_ENTEROS = INT(PIES_TOTALES)
+70 PULGADAS = (PIES_TOTALES - PIES_ENTEROS) * 12
+80 PRINT M; " METROS = ";
+90 PRINT PIES_ENTEROS; " PIES Y ";
+100 PRINT INT(PULGADAS + 0.5); " PULGADAS"
+110 END`,
+                problema: `📌 PROBLEMA: Se ingresa METROS = 2. ¿Cuántos pies y pulgadas son? (1 metro = 3.28084 pies, 1 pie = 12 pulgadas)`
+            },
+            "PSEINT": {
+                codigo: `Algoritmo DistanciaEuclidiana
+    Definir x1, y1, x2, y2, dx, dy, dist Como Real
+    Escribir "Ingrese x1, y1, x2, y2:"
+    Leer x1, y1, x2, y2
+    dx ← x2 - x1
+    dy ← y2 - y1
+    dist ← raiz(dx^2 + dy^2)
+    Escribir "La distancia es: ", dist
+FinAlgoritmo`,
+                problema: `📍 PROBLEMA: Calcular distancia entre dos puntos. Fórmula: raiz((x2-x1)^2 + (y2-y1)^2).<br><br>Datos: Punto A (3,4), Punto B (6,8)`
+            },
+            "FORTRAN": {
+                codigo: `PROGRAM IDENTIDAD
+REAL ANGULO, SENO, COSENO, SUMA
+REAL PI
+PI = 3.14159
+PRINT *, 'INGRESE UN ANGULO EN GRADOS:'
+READ *, ANGULO
+ANGULO = ANGULO * PI / 180.0
+SENO = SIN(ANGULO)
+COSENO = COS(ANGULO)
+SUMA = SENO**2 + COSENO**2
+PRINT *, 'SENO:', SENO
+PRINT *, 'COSENO:', COSENO
+PRINT *, 'SENO^2 + COSENO^2 =', SUMA
+END`,
+                problema: `🔢 PROBLEMA: Se ingresa ANGULO = 90°. ¿Qué valores se muestran para SENO, COSENO y SUMA?`
+            },
+            "SQL": {
+                codigo: `SELECT localidad, altura
+FROM provincia
+WHERE altura BETWEEN 800 AND 1000;`,
+                problema: `🗄️ PROBLEMA: Tabla "provincia" con: Las Lajas(703), Zapala(1015), Loncopué(935), Chos Malal(974), San Martín(640). ¿Qué localidades aparecen?`
+            },
+            "PROLOG": {
+                codigo: `masa(auto, 1200).
+aceleracion(auto, 2.5).
+velocidad_inicial(auto, 0).
+tiempo(auto, 8).
+
+calcular_fuerza(Objeto, F) :-
+    masa(Objeto, M),
+    aceleracion(Objeto, A),
+    F is M * A.
+
+velocidad_final(Objeto, Vf) :-
+    velocidad_inicial(Objeto, Vi),
+    aceleracion(Objeto, A),
+    tiempo(Objeto, T),
+    Vf is Vi + (A * T).`,
+                problema: `⚙️ PROBLEMA: masa=1200kg, a=2.5 m/s², Vi=0, t=8s.<br><br>1. ¿Fuerza? 2. ¿Velocidad final? 3. ¿Distancia recorrida?`
+            },
+            "SCRATCH": {
+                codigo: "imagen",
+                imagenCodigo: "https://i.pinimg.com/736x/c8/f3/67/c8f367a6b52aea66472cdbda28682bd6.jpg",
+                problema: `🎮 PROBLEMA: Permitir mover un personaje con las teclas W (arriba), S (abajo), A (izquierda), D (derecha).`
+            },
+            "SMALLTALK": {
+                codigo: `Object subclass: #Maceta
+    instanceVariableNames: 'nombre humedad capacidad'
+
+inicializarConNombre: unNombre capacidad: unaCapacidad
+    nombre := unNombre.
+    capacidad := unaCapacidad.
+    humedad := 0.
+
+regar: cantidad
+    (humedad + cantidad) <= capacidad
+        ifTrue: [ humedad := humedad + cantidad ].
+
+pasarDia
+    humedad := humedad - 5.
+    (humedad < 0) ifTrue: [ humedad := 0 ].
+
+necesitaRiego
+    ^ humedad < 20`,
+                problema: `🌱 PROBLEMA: Maceta 'Albahaca' capacidad 100.<br><br>1. regar 30<br>2. pasarDia<br>3. regar 80<br>4. pasarDia<br>5. pasarDia<br><br>a) ¿Humedad paso1? b) ¿Humedad paso3? c) ¿necesitaRiego?`
+            },
+            "JAVA": {
+                codigo: `class Contenedor {
+    private String id;
+    private double latitud, longitud;
+    private int nivelLlenado;
+
+    public void actualizarUbicacion(double nuevaLat, double nuevaLon) {
+        this.latitud = nuevaLat;
+        this.longitud = nuevaLon;
+    }
+
+    public boolean necesitaRecoleccion() {
+        return nivelLlenado > 80;
+    }
+
+    public String reportarEstado() {
+        return "Contenedor " + id + " en (" + latitud + "," + longitud + 
+               ") con " + nivelLlenado + "% de carga";
+    }
+}`,
+                problema: `🗑️ PROBLEMA: Contenedor C-001, lat=-34.6037, lon=-58.3816, nivel=50.<br><br>Se ejecuta: actualizarUbicacion(-34.6050, -58.3820) y llenar(40)<br><br>1. ¿Nuevas coordenadas?<br>2. ¿necesitaRecoleccion()?<br>3. ¿Qué dice reportarEstado()?`
+            }
+        };
+        return mapping[grupoId];
+    }
+
+    // ======================== TARJETAS PARADIGMA ========================
+    function getTarjetasParadigma() {
+        return [
+            { tipo_correcto: "Imperativo (Procedimental)", texto: "🧠 IMPERATIVO (PROCEDIMENTAL)<br><br>📖 <strong>Explicación:</strong><br>Describe paso a paso CÓMO hacer algo. Secuencia de comandos que modifican el estado del programa.<br><br>🎯 <strong>Usar cuando:</strong><br>Necesites control exacto de hardware o secuencias rígidas." },
+            { tipo_correcto: "Imperativo (Procedimental)", texto: "🧠 IMPERATIVO (PROCEDIMENTAL)<br><br>📖 <strong>Explicación:</strong><br>Algoritmo como lista de instrucciones que se ejecutan en orden.<br><br>🎯 <strong>Usar cuando:</strong><br>Resuelvas problemas lineales sin abstracciones complejas." },
+            { tipo_correcto: "Declarativo", texto: "🧠 DECLARATIVO<br><br>📖 <strong>Explicación:</strong><br>Describes QUÉ quieres obtener, no cómo.<br><br>🎯 <strong>Usar cuando:</strong><br>Hagas consultas a bases de datos." },
+            { tipo_correcto: "Declarativo (Lógico)", texto: "🧠 DECLARATIVO (LÓGICO)<br><br>📖 <strong>Explicación:</strong><br>Basado en lógica formal y hechos.<br><br>🎯 <strong>Usar cuando:</strong><br>Necesites validar información por medios deductivos." },
+            { tipo_correcto: "Educativo", texto: "🧠 EDUCATIVO<br><br>📖 <strong>Explicación:</strong><br>Prioriza la comprensión mediante herramientas visuales o lenguaje natural.<br><br>🎯 <strong>Cuándo usarlo:</strong><br>Introducir programación a principiantes, sin errores de sintaxis." },
+            { tipo_correcto: "Educativo", texto: "🧠 EDUCATIVO<br><br>📖 <strong>Explicación:</strong><br>Elimina complejidad sintáctica para enfocarse en la lógica.<br><br>🎯 <strong>Cuándo usarlo:</strong><br>Programación en bloques, robótica inicial, pensamiento computacional." },
+            { tipo_correcto: "Orientado a Objetos", texto: "🧠 ORIENTADO A OBJETOS<br><br>📖 <strong>Explicación:</strong><br>Todo es un objeto con atributos y comportamientos. Herencia y polimorfismo.<br><br>🎯 <strong>Usar cuando:</strong><br>Modeles entidades del mundo real (ej: administrar riego de una maceta)." },
+            { tipo_correcto: "Orientado a Objetos", texto: "🧠 ORIENTADO A OBJETOS<br><br>📖 <strong>Explicación:</strong><br>Reutilización de código entre objetos relacionados.<br><br>🎯 <strong>Usar cuando:</strong><br>Gestionar distribución y movimiento de contenedores." }
+        ];
+    }
+
+    // ======================== CONSTRUIR CARTAS ========================
+    let todasLasCartas = [];
+
+    function construirCartas() {
+        let cartas = [];
+        let id = 1;
+
+        // Lenguajes
+        for (let lang of LENGUAJES) {
+            const ambitosTexto = AMBITOS[lang.nombre] || "Ámbitos no especificados";
+            
+            cartas.push({
+                id: id++,
+                tipo: "LENGUAJE",
+                titulo: `💻 ${lang.nombre}`,
+                contenido: `<div style="font-size:3rem; text-align:center;">${lang.icono}</div>
+                           <div class="info-line"><strong>📌 PARADIGMA:</strong> ${lang.paradigma}</div>
+                           <div class="info-line"><strong>📅 AÑO:</strong> ${lang.anio}</div>
+                           <div class="separador"></div>
+                           <div class="info-line"><strong>🗺️ ÁMBITOS:</strong><br>${ambitosTexto}</div>`,
+                grupoId: lang.grupoId
+            });
+        }
+
+        // Códigos y Problemas
+        for (let lang of LENGUAJES) {
+            const data = getCodigoYProblema(lang.grupoId);
+            
+            let codigoHTML = '';
+            if (data.imagenCodigo) {
+                codigoHTML = `<img class="codigo-img" src="${data.imagenCodigo}" alt="Código" style="max-width:100%; border-radius:12px;">`;
+            } else {
+                codigoHTML = `<pre>${data.codigo}</pre>`;
+            }
+            
+            cartas.push({
+                id: id++,
+                tipo: "CODIGO",
+                titulo: `📜 CÓDIGO`,
+                contenido: codigoHTML,
+                grupoId: lang.grupoId,
+                glosario: GLOSARIOS[lang.grupoId] || "Glosario no disponible"
+            });
+            
+            cartas.push({
+                id: id++,
+                tipo: "PROBLEMA",
+                titulo: `❓ PROBLEMA`,
+                contenido: data.problema,
+                grupoId: lang.grupoId
+            });
+        }
+
+        // Paradigmas
+        const paradigmas = getTarjetasParadigma();
+        for (let p of paradigmas) {
+            cartas.push({
+                id: id++,
+                tipo: "PARADIGMA",
+                titulo: `🧠 PARADIGMA`,
+                contenido: p.texto,
+                tipoCorrecto: p.tipo_correcto,
+                grupoId: null
+            });
+        }
+
+        return cartas;
+    }
+
+    todasLasCartas = construirCartas();
+
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    let manoActual = [];
+
+    function generarManoInicial() {
+        const lenguajes = shuffleArray([...todasLasCartas.filter(c => c.tipo === "LENGUAJE")]);
+        const codigos = shuffleArray([...todasLasCartas.filter(c => c.tipo === "CODIGO")]);
+        const problemas = shuffleArray([...todasLasCartas.filter(c => c.tipo === "PROBLEMA")]);
+        const paradigmas = shuffleArray([...todasLasCartas.filter(c => c.tipo === "PARADIGMA")]);
+        return [lenguajes[0], codigos[0], problemas[0], paradigmas[0]];
+    }
+
+    function descartarCarta(indice) {
+        const descartada = manoActual[indice];
+        const mismoTipo = manoActual.filter(c => c.tipo === descartada.tipo).map(c => c.id);
+        let disponibles = todasLasCartas.filter(c => c.tipo === descartada.tipo && !mismoTipo.includes(c.id));
+        if (disponibles.length === 0) disponibles = todasLasCartas.filter(c => c.tipo === descartada.tipo);
+        manoActual[indice] = shuffleArray([...disponibles])[0];
+        renderizarCartas();
+        document.getElementById("mensaje").innerHTML = "🔄 Carta descartada. ¡Sigue combinando!";
+        document.getElementById("mensaje").className = "mensaje-area";
+    }
+
+    function verificarGrupo() {
+        const lenguaje = manoActual.find(c => c.tipo === "LENGUAJE");
+        const codigo = manoActual.find(c => c.tipo === "CODIGO");
+        const problema = manoActual.find(c => c.tipo === "PROBLEMA");
+        const paradigma = manoActual.find(c => c.tipo === "PARADIGMA");
+
+        if (!lenguaje || !codigo || !problema || !paradigma) {
+            mostrarMensaje("Faltan cartas", "error");
+            return;
+        }
+
+        const ok = (lenguaje.grupoId === codigo.grupoId && 
+                    codigo.grupoId === problema.grupoId &&
+                    paradigma.tipoCorrecto === PARADIGMA_POR_GRUPO[lenguaje.grupoId]);
+
+        if (ok) {
+            const codigoVerif = `OK-${lenguaje.grupoId}-${Date.now().toString().slice(-6)}`;
+            mostrarMensaje(`🎉 ¡CORRECTO! Grupo: ${lenguaje.grupoId}<br><div class="codigo-verif">${codigoVerif}</div>`, "exito");
+        } else {
+            mostrarMensaje(`❌ No coinciden. Revisa que lenguaje, código, problema y paradigma sean del mismo caso.`, "error");
+        }
+    }
+
+    function mostrarMensaje(texto, tipo) {
+        const div = document.getElementById("mensaje");
+        div.innerHTML = texto;
+        div.className = `mensaje-area ${tipo === "exito" ? "exito" : (tipo === "error" ? "error" : "")}`;
+    }
+
+    function reiniciarJuego() {
+        manoActual = generarManoInicial();
+        renderizarCartas();
+        mostrarMensaje("🃏 Juego reiniciado. Nuevas cartas aleatorias.", "");
+    }
+
+    function toggleGlosario(btn, glosarioDiv) {
+        if (glosarioDiv.classList.contains("mostrar")) {
+            glosarioDiv.classList.remove("mostrar");
+            btn.textContent = "📖 Ver glosario";
+        } else {
+            glosarioDiv.classList.add("mostrar");
+            btn.textContent = "📕 Ocultar glosario";
+        }
+    }
+
+    function renderizarCartas() {
+        const grid = document.getElementById("cardsGrid");
+        grid.innerHTML = "";
+        
+        for (let i = 0; i < manoActual.length; i++) {
+            const carta = manoActual[i];
+            const card = document.createElement("div");
+            card.className = "card";
+            
+            let contenido = `<div class="card-content">${carta.contenido}`;
+            
+            if (carta.tipo === "CODIGO" && carta.glosario) {
+                const glosarioId = `g-${i}-${Date.now()}`;
+                contenido += `
+                    <div class="glosario-container">
+                        <button class="btn-glosario" data-glosario="${glosarioId}">📖 Ver glosario</button>
+                        <div id="${glosarioId}" class="glosario-texto">${carta.glosario}</div>
+                    </div>
+                `;
+            }
+            
+            contenido += `</div>`;
+            card.innerHTML = `
+                <div class="card-header">
+                    <span>${carta.titulo}</span>
+                    <span class="tipo-badge">${carta.tipo}</span>
+                </div>
+                ${contenido}
+                <button class="btn-descartar" data-index="${i}">🗑️ DESCARTAR</button>
+            `;
+            grid.appendChild(card);
+        }
+        
+        document.querySelectorAll(".btn-descartar").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const idx = parseInt(btn.getAttribute("data-index"));
+                descartarCarta(idx);
+            });
+        });
+        
+        document.querySelectorAll(".btn-glosario").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const id = btn.getAttribute("data-glosario");
+                const div = document.getElementById(id);
+                toggleGlosario(btn, div);
+            });
+        });
+    }
+
+    // Iniciar juego
+    manoActual = generarManoInicial();
+    renderizarCartas();
+    document.getElementById("verificarBtn").addEventListener("click", verificarGrupo);
+    document.getElementById("resetBtn").addEventListener("click", reiniciarJuego);
+</script>
+</body>
+</html>
