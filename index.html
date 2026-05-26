@@ -111,24 +111,24 @@
 </head>
 <body>
 
-<h1>📍 Topografía GPS</h1>
+<h1>Topografía GPS</h1>
 <p style="text-align: center; color: #555;">Distancia Euclidiana vs Distancia Manhattan</p>
 
 <!-- Panel de GPS actual -->
 <div class="card">
-    <h2>📱 Mi ubicación actual</h2>
-    <button class="boton" onclick="obtenerMiUbicacion()">🔄 Obtener mi GPS</button>
+    <h2>Mi ubicación actual</h2>
+    <button class="boton" onclick="obtenerMiUbicacion()">Obtener mi GPS</button>
     <div id="miUbicacion">
         <p style="color: #7f8c8d; text-align: center;">Presioná el botón para obtener tus coordenadas</p>
     </div>
     <div class="info">
-        💡 <strong>¿Sin GPS?</strong> Podés usar coordenadas de ejemplo más abajo.
+        <strong>¿Sin GPS?</strong> Podés usar coordenadas de ejemplo más abajo.
     </div>
 </div>
 
 <!-- Punto A y B -->
 <div class="card">
-    <h2>📍 Puntos para calcular distancia</h2>
+    <h2>Puntos para calcular distancia</h2>
     
     <label>Punto A - Latitud:</label>
     <input type="text" id="latA" placeholder="Ej: -34.603722" value="-34.603722">
@@ -141,16 +141,16 @@
     <input type="text" id="lonB" placeholder="Ej: -58.382000" value="-58.382000">
     
     <div class="grupoflex">
-        <button class="boton" onclick="intercambiarPuntos()">🔄 Intercambiar A↔B</button>
-        <button class="boton boton-secundario" onclick="usarGPSenA()">📍 Usar GPS en A</button>
-        <button class="boton boton-secundario" onclick="usarGPSenB()">📍 Usar GPS en B</button>
+        <button class="boton" onclick="intercambiarPuntos()">Intercambiar A↔B</button>
+        <button class="boton boton-secundario" onclick="usarGPSenA()">Usar GPS en A</button>
+        <button class="boton boton-secundario" onclick="usarGPSenB()">Usar GPS en B</button>
     </div>
 </div>
 
 <!-- Calcular distancias -->
 <div class="card">
-    <h2>📐 Calcular distancias</h2>
-    <button class="boton" onclick="calcularDistancias()">🧮 Calcular</button>
+    <h2>Calcular distancias</h2>
+    <button class="boton" onclick="calcularDistancias()">Calcular</button>
     
     <div id="resultados">
         <p style="color: #7f8c8d; text-align: center;">Presioná "Calcular" para ver los resultados</p>
@@ -159,9 +159,9 @@
 
 <!-- Actividad didáctica -->
 <div class="card">
-    <h2>📝 Reflexión para tu cuaderno</h2>
+    <h2>Reflexión para tu cuaderno</h2>
     <div class="info">
-        <strong>✏️ Respondé en tu grupo:</strong><br>
+        <strong>Respondé en tu grupo:</strong><br>
         1. ¿Cuál de las dos distancias es más grande? ¿Por qué?<br>
         2. Si estuvieras caminando por calles de una ciudad (manzanas), ¿qué distancia representa mejor tu recorrido?<br>
         3. ¿Cómo cambiarían los valores si convirtieras grados a metros?<br>
@@ -177,10 +177,10 @@
     // Obtener ubicación actual
     function obtenerMiUbicacion() {
         const divResultado = document.getElementById('miUbicacion');
-        divResultado.innerHTML = '<p>⏳ Obteniendo ubicación... (pedile permiso al navegador)</p>';
+        divResultado.innerHTML = '<p>Obteniendo ubicación... (pedile permiso al navegador)</p>';
         
         if (!navigator.geolocation) {
-            divResultado.innerHTML = '<div class="error">❌ Tu navegador no soporta geolocalización.</div>';
+            divResultado.innerHTML = '<div class="error">Tu navegador no soporta geolocalización.</div>';
             return;
         }
         
@@ -194,15 +194,15 @@
                 
                 divResultado.innerHTML = `
                     <div class="coordenada">
-                        🟢 Latitud: ${lat.toFixed(6)}°<br>
-                        🟢 Longitud: ${lon.toFixed(6)}°
+                        Latitud: ${lat.toFixed(6)}°<br>
+                        Longitud: ${lon.toFixed(6)}°
                     </div>
                     <div class="info">
-                        📏 Precisión: ±${precision.toFixed(1)} metros<br>
-                        🕐 Fuente: GPS + redes
+                        Precisión: ±${precision.toFixed(1)} metros<br>
+                        Fuente: GPS + redes
                     </div>
                     <button class="boton boton-secundario" style="margin-top:10px;" onclick="copiarCoordenadas('${lat}', '${lon}')">
-                        📋 Copiar coordenadas al portapapeles
+                        Copiar coordenadas al portapapeles
                     </button>
                 `;
             },
@@ -210,16 +210,16 @@
                 let mensaje = "";
                 switch(error.code) {
                     case 1:
-                        mensaje = "❌ Permiso denegado. Activá la ubicación en tu navegador.";
+                        mensaje = "Permiso denegado. Activá la ubicación en tu navegador.";
                         break;
                     case 2:
-                        mensaje = "❌ No se pudo obtener la ubicación (señal GPS débil).";
+                        mensaje = "No se pudo obtener la ubicación (señal GPS débil).";
                         break;
                     case 3:
-                        mensaje = "⏰ Tiempo de espera agotado. Intentá de nuevo.";
+                        mensaje = "Tiempo de espera agotado. Intentá de nuevo.";
                         break;
                     default:
-                        mensaje = "❌ Error desconocido.";
+                        mensaje = "Error desconocido.";
                 }
                 divResultado.innerHTML = `<div class="error">${mensaje}</div>`;
             },
@@ -231,7 +231,7 @@
     function copiarCoordenadas(lat, lon) {
         const texto = `${lat}, ${lon}`;
         navigator.clipboard.writeText(texto).then(() => {
-            alert(`✅ Coordenadas copiadas: ${texto}`);
+            alert(`Coordenadas copiadas: ${texto}`);
         }).catch(() => {
             alert("No se pudo copiar automáticamente. Copialas manualmente.");
         });
@@ -245,7 +245,7 @@
         }
         document.getElementById('latA').value = ultimaLat.toFixed(6);
         document.getElementById('lonA').value = ultimaLon.toFixed(6);
-        alert("✅ Punto A actualizado con tu ubicación GPS");
+        alert("Punto A actualizado con tu ubicación GPS");
     }
     
     // Usar GPS actual en punto B
@@ -256,7 +256,7 @@
         }
         document.getElementById('latB').value = ultimaLat.toFixed(6);
         document.getElementById('lonB').value = ultimaLon.toFixed(6);
-        alert("✅ Punto B actualizado con tu ubicación GPS");
+        alert("Punto B actualizado con tu ubicación GPS");
     }
     
     // Intercambiar puntos A y B
@@ -271,7 +271,7 @@
         document.getElementById('latB').value = latA;
         document.getElementById('lonB').value = lonA;
         
-        alert("🔄 Puntos intercambiados");
+        alert("Puntos intercambiados");
         calcularDistancias(); // auto-calcular
     }
     
@@ -286,7 +286,7 @@
         if (isNaN(lat1) || isNaN(lon1) || isNaN(lat2) || isNaN(lon2)) {
             document.getElementById('resultados').innerHTML = `
                 <div class="error">
-                    ⚠️ Ingresá números válidos en las coordenadas.
+                    Ingresá números válidos en las coordenadas.
                 </div>
             `;
             return;
@@ -303,18 +303,18 @@
         // Mostrar resultados
         document.getElementById('resultados').innerHTML = `
             <div class="resultado" style="background: #3498db;">
-                📐 <strong>Distancia Euclidiana</strong> (línea recta)<br>
+                <strong>Distancia Euclidiana</strong> (línea recta)<br>
                 = √(Δlat² + Δlon²)<br>
                 = <span style="font-size: 1.3em;">${distanciaEuclidiana.toFixed(8)}</span> grados
             </div>
             <div class="resultado" style="background: #e67e22;">
-                🏙️ <strong>Distancia Manhattan</strong> (cuadrícula)<br>
+                <strong>Distancia Manhattan</strong> (cuadrícula)<br>
                 = |Δlat| + |Δlon|<br>
                 = <span style="font-size: 1.3em;">${distanciaManhattan.toFixed(8)}</span> grados
             </div>
             <div class="info">
-                <strong>📌 Diferencia:</strong> ${(distanciaManhattan - distanciaEuclidiana).toFixed(8)} grados<br>
-                <strong>💡 Aproximación a metros:</strong> 1° ≈ 111 km →<br>
+                <strong>Diferencia:</strong> ${(distanciaManhattan - distanciaEuclidiana).toFixed(8)} grados<br>
+                <strong>Aproximación a metros:</strong> 1° ≈ 111 km →<br>
                 Euclidiana ≈ ${(distanciaEuclidiana * 111000).toFixed(2)} metros<br>
                 Manhattan ≈ ${(distanciaManhattan * 111000).toFixed(2)} metros
             </div>
