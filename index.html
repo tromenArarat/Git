@@ -3,329 +3,717 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>GPS Topográfica - Distancias Euclidiana y Manhattan</title>
+    <title>Clasificador de Errores | Sintaxis · Ejecución · Lógicos | Topografía</title>
     <style>
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Fira Code', 'Courier New', monospace;
             padding: 20px;
-            background: #f0f4f8;
         }
-        h1 {
-            color: #1a5f7a;
-            text-align: center;
-            font-size: 1.8em;
-        }
-        h2 {
-            color: #2c3e50;
-            font-size: 1.2em;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 5px;
-        }
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .coordenada {
-            font-family: 'Courier New', monospace;
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #2c3e50;
-            background: #e8f0fe;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 10px 0;
-        }
-        .boton {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            width: 100%;
-            margin: 5px 0;
-        }
-        .boton:hover {
-            background: #2980b9;
-        }
-        .boton-secundario {
-            background: #95a5a6;
-        }
-        .resultado {
-            background: #2ecc71;
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-weight: bold;
-        }
-        .error {
-            background: #e74c3c;
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 10px 0;
-        }
-        .info {
-            background: #ecf0f1;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.9em;
-            margin: 10px 0;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #bdc3c7;
-            border-radius: 6px;
-            font-family: monospace;
-        }
-        label {
-            font-weight: bold;
-            margin-top: 10px;
-            display: block;
-        }
-        .grupoflex {
+
+        /* Layout principal con barra lateral */
+        .main-layout {
             display: flex;
-            gap: 10px;
-            margin: 10px 0;
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: flex-start;
         }
-        .grupoflex button {
+
+        /* Barra lateral fija (sticky) */
+        .sidebar {
+            flex: 0 0 300px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            border: 1px solid #334155;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .sidebar h3 {
+            color: #f0f9ff;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #38bdf8;
+            padding-bottom: 0.5rem;
+        }
+
+        .error-def {
+            margin-bottom: 1.8rem;
+            padding: 0.8rem;
+            border-radius: 1rem;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .error-def h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-def p {
+            font-size: 0.85rem;
+            color: #cbd5e6;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .error-def .example {
+            background: #020617;
+            padding: 0.4rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            margin: 0.5rem 0;
+            color: #e2e8f0;
+        }
+
+        .error-def .fix {
+            color: #4ade80;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+        }
+
+        .sintaxis-def { border-left: 4px solid #ef4444; }
+        .ejecucion-def { border-left: 4px solid #f97316; }
+        .logico-def { border-left: 4px solid #eab308; }
+
+        .game-container {
             flex: 1;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.2);
         }
-        @media (max-width: 480px) {
-            body { padding: 10px; }
-            .coordenada { font-size: 1em; }
+
+        .score-header {
+            background: #0f172a;
+            border-radius: 2rem;
+            padding: 1rem 1.8rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 8px 14px rgba(0,0,0,0.3);
+            border-bottom: 3px solid #38bdf8;
+        }
+
+        .title-box h1 {
+            color: #f0f9ff;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .title-box p {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        .stats {
+            background: #1e293b;
+            padding: 0.5rem 1.2rem;
+            border-radius: 3rem;
+            text-align: center;
+        }
+
+        .stats .aciertos {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4ade80;
+        }
+
+        .problem-card {
+            background: #0f172ad9;
+            border-radius: 1.8rem;
+            padding: 2rem;
+            margin-bottom: 1.2rem;
+            border: 1px solid #334155;
+        }
+
+        .code-block {
+            background: #020617;
+            padding: 1.5rem;
+            border-radius: 1.2rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+            border-left: 6px solid #f97316;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .error-badge {
+            display: inline-block;
+            background: #f97316;
+            color: #0c0a2a;
+            font-weight: bold;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            justify-content: center;
+        }
+
+        .option-btn {
+            flex: 1;
+            min-width: 130px;
+            background: #1e293b;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #f1f5f9;
+            transition: 0.2s;
+            border-bottom: 2px solid #334155;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            filter: brightness(1.05);
+        }
+
+        .option-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .sintaxis-btn { background: #7f1a1a; border-bottom-color: #ef4444; }
+        .ejecucion-btn { background: #9a3412; border-bottom-color: #f97316; }
+        .logico-btn { background: #854d0e; border-bottom-color: #eab308; }
+
+        .feedback {
+            margin-top: 1.3rem;
+            padding: 1rem;
+            border-radius: 1.5rem;
+            background: #0f172a;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .feedback-success {
+            background: #14532d;
+            color: #bbf7d0;
+            border-left: 5px solid #4ade80;
+        }
+
+        .feedback-error {
+            background: #7f1a1a;
+            color: #fecaca;
+            border-left: 5px solid #ef4444;
+        }
+
+        .explanation-box {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .reset-btn, .next-btn {
+            background: #334155;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+        }
+
+        .next-btn {
+            background: #3b82f6;
+        }
+
+        .next-btn:hover, .reset-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        .custom-footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #7e8aa2;
+            margin-top: 1.5rem;
+            padding-top: 0.8rem;
+            border-top: 1px dashed #334155;
+        }
+
+        @media (max-width: 850px) {
+            .main-layout { flex-direction: column; }
+            .sidebar {
+                flex: auto;
+                position: relative;
+                top: 0;
+                width: 100%;
+                max-height: none;
+            }
         }
     </style>
 </head>
 <body>
+<div class="main-layout">
+    <!-- BARRA LATERAL CON DEFINICIONES Y ACCIONES -->
+    <div class="sidebar">
+        <h3>GUÍA DE ERRORES</h3>
+        
+        <div class="error-def sintaxis-def">
+            <h4><span style="color:#ef4444;">Ø</span> ERROR DE SINTAXIS</h4>
+            <p><strong>¿Qué es?</strong> No se siguen las reglas del lenguaje utilizado. El programa NO PUEDE EJECUTARSE.</p>
+            <div class="example">Ejemplo: <code>si x menorQue 5 entonces</code> (debería ser <code>x < 5</code>)</div>
+            <p><strong>🔧 Cómo corregirlo:</strong> Revisar ortografía de palabras clave, operadores, estructura de bloques (finsi, fin_mientras), comillas en textos, paréntesis.</p>
+            <div class="fix">Acción: Comparar con la sintaxis correcta de PSeInt.</div>
+        </div>
 
-<h1>Topografía GPS</h1>
-<p style="text-align: center; color: #555;">Distancia Euclidiana vs Distancia Manhattan</p>
+        <div class="error-def ejecucion-def">
+            <h4><span style="color:#f97316;">Ø</span> ERROR DE EJECUCIÓN</h4>
+            <p><strong>¿Qué es?</strong> El programa arranca pero se DETIENE por una operación imposible en tiempo de ejecución.</p>
+            <div class="example">Ejemplo: <code>resultado = 100 / 0</code> (división por cero)</div>
+            <p><strong>🔧 Cómo corregirlo:</strong> Validar datos de entrada (evitar división por cero o raiz cuadrada de negativos), verificar índices de listas, inicializar variables, evitar bucles infinitos.</p>
+            <div class="fix">Acción: Agregar controles condicionales antes de operaciones riesgosas.</div>
+        </div>
 
-<!-- Panel de GPS actual -->
-<div class="card">
-    <h2>Mi ubicación actual</h2>
-    <button class="boton" onclick="obtenerMiUbicacion()">Obtener mi GPS</button>
-    <div id="miUbicacion">
-        <p style="color: #7f8c8d; text-align: center;">Presioná el botón para obtener tus coordenadas</p>
+        <div class="error-def logico-def">
+            <h4><span style="color:#eab308;">Ø</span> ERROR LÓGICO</h4>
+            <p><strong>¿Qué es?</strong> El programa CORRE pero da un RESULTADO INCORRECTO. Es el más difícil de detectar.</p>
+            <div class="example">Ejemplo: <code>promedio = suma * 3</code> (debería ser <code>suma / 3</code>)</div>
+            <p><strong>🔧 Cómo corregirlo:</strong> Revisar fórmulas matemáticas, condiciones de comparación (>=, >, <), operadores lógicos (y/o), inicialización de acumuladores.</p>
+            <div class="fix">Acción: Probar con casos conocidos y verificar resultados esperados.</div>
+        </div>
+        <div style="margin-top: 1rem; font-size:0.7rem; color:#5b6e8c; text-align:center;">
+            💡 Cada error tiene explicación detallada al responder
+        </div>
     </div>
-    <div class="info">
-        <strong>¿Sin GPS?</strong> Podés usar coordenadas de ejemplo más abajo.
-    </div>
-</div>
 
-<!-- Punto A y B -->
-<div class="card">
-    <h2>Puntos para calcular distancia</h2>
-    
-    <label>Punto A - Latitud:</label>
-    <input type="text" id="latA" placeholder="Ej: -34.603722" value="-34.603722">
-    <label>Punto A - Longitud:</label>
-    <input type="text" id="lonA" placeholder="Ej: -58.381592" value="-58.381592">
-    
-    <label style="margin-top: 15px;">Punto B - Latitud:</label>
-    <input type="text" id="latB" placeholder="Ej: -34.603900" value="-34.603900">
-    <label>Punto B - Longitud:</label>
-    <input type="text" id="lonB" placeholder="Ej: -58.382000" value="-58.382000">
-    
-    <div class="grupoflex">
-        <button class="boton" onclick="intercambiarPuntos()">Intercambiar A↔B</button>
-        <button class="boton boton-secundario" onclick="usarGPSenA()">Usar GPS en A</button>
-        <button class="boton boton-secundario" onclick="usarGPSenB()">Usar GPS en B</button>
-    </div>
-</div>
-
-<!-- Calcular distancias -->
-<div class="card">
-    <h2>Calcular distancias</h2>
-    <button class="boton" onclick="calcularDistancias()">Calcular</button>
-    
-    <div id="resultados">
-        <p style="color: #7f8c8d; text-align: center;">Presioná "Calcular" para ver los resultados</p>
-    </div>
-</div>
-
-<!-- Actividad didáctica -->
-<div class="card">
-    <h2>Reflexión para tu cuaderno</h2>
-    <div class="info">
-        <strong>Respondé en tu grupo:</strong><br>
-        1. ¿Cuál de las dos distancias es más grande? ¿Por qué?<br>
-        2. Si estuvieras caminando por calles de una ciudad (manzanas), ¿qué distancia representa mejor tu recorrido?<br>
-        3. ¿Cómo cambiarían los valores si convirtieras grados a metros?<br>
-        4. ¿Qué tipo de error podrías tener si olvidás usar valor absoluto en Manhattan?
+    <!-- CONTENEDOR PRINCIPAL DEL JUEGO -->
+    <div class="game-container" id="gameRoot">
+        <div class="score-header">
+            <div class="title-box">
+                <h1><span>╠</span> CLASIFICA EL ERROR</h1>
+                <p>Identifica el tipo y aprende a corregirlo</p>
+            </div>
+            <div class="stats">
+                <div class="aciertos" id="aciertosCount">0</div>
+                <div class="total" id="totalResueltos">aciertos / <span id="totalBase">0</span></div>
+            </div>
+        </div>
+        <div id="problemArea"></div>
+        <footer class="custom-footer">
+            Introducción a la Informática - Tecnicatura Universitaria en Topografía
+        </footer>
     </div>
 </div>
 
 <script>
-    // Variables para guardar la última ubicación GPS
-    let ultimaLat = null;
-    let ultimaLon = null;
+    // ==============================================================
+    // BASE DE ERRORES con comentarios aclaratorios en el código
+    // y explicación completa para cada uno.
+    // ==============================================================
+    const ERROR_POOL = [
+        // SINTAXIS
+        { 
+            code: `// Objetivo: Comparar si x es menor que 5
+si x menorQue 5 entonces    // ERROR: < se usa para comparar
+    escribir("x es menor que 5")
+finsi`,
+            type: "sintaxis", 
+            explanation: "ERROR DE SINTAXIS: En pseudocódigo la comparación se realiza con <. Usar menorQue dentro de un 'si' no es reconocido como una sintaxis válida. El programa NO PUEDE ejecutarse." 
+        },
+        { 
+            code: `// Objetivo: Guardar el resultado de una operación entre a y b
+resultado = a b      // ERROR: Falta el operador (+, -, *, /) entre a y b`,
+            type: "sintaxis", 
+            explanation: "ERROR DE SINTAXIS: Falta un operador aritmético. El intérprete no sabe qué hacer con dos variables seguidas." 
+        },
+        { 
+            code: `// Objetivo: Decidir un saludo
+si hora < 24 entonces
+    escribir("Buen día")
+// ERROR: Falta el 'finsi' que cierra la estructura condicional`,
+            type: "sintaxis", 
+            explanation: "ERROR DE SINTAXIS: La estructura 'si' debe cerrarse con 'finsi'. Sin él, el lenguaje no reconoce el final del bloque." 
+        },
+        { 
+            code: `// Objetivo: Mostrar números del 0 al 9
+mientras i < 10 hacé    // ERROR: 'hacé' no es una palabra clave válida
+    escribir(i)
+    i = i + 1
+fin_mientras`,
+            type: "sintaxis", 
+            explanation: "ERROR DE SINTAXIS: La palabra correcta es 'hacer', no 'hacé'. Una palabra mal escrita invalida toda la estructura." 
+        },
+        { 
+            code: `// Objetivo: Aprobar si nota es mayor o igual a 7
+si nota => 7 entonces   // ERROR: '=>' no es un operador válido
+    escribir("Aprobado")
+finsi`,
+            type: "sintaxis", 
+            explanation: "ERROR DE SINTAXIS: El operador correcto para 'mayor o igual que' es '>='. '=>' no existe." 
+        },
+        
+        // EJECUCIÓN
+        { 
+            code: `// Objetivo: Calcular 100 dividido un número ingresado
+leer(n)           // Usuario ingresa 0
+resultado = 100 / n   // ERROR: División por cero en tiempo de ejecución
+escribir(resultado)`,
+            type: "ejecucion", 
+            explanation: "ERROR DE EJECUCIÓN: La sintaxis es correcta, pero si el usuario ingresa 0 ocurre una división por cero. El programa se detiene abruptamente." 
+        },
+        { 
+            code: `// Objetivo: Mostrar el tercer elemento de una lista
+lista = [10, 20, 30]   // Índices válidos: 0, 1, 2
+escribir(lista[5])     // ERROR: Índice 5 fuera de rango`,
+            type: "ejecucion", 
+            explanation: "ERROR DE EJECUCIÓN: Se intenta acceder a un índice inexistente. La lista solo tiene 3 elementos." 
+        },
+        { 
+            code: `// Objetivo: Mostrar números del 0 al 9
+mientras i < 10 hacer   // ERROR: La variable 'i' no fue inicializada
+    escribir(i)
+    i = i + 1
+fin_mientras`,
+            type: "ejecucion", 
+            explanation: "ERROR DE EJECUCIÓN: La variable 'i' no tiene valor inicial. No se puede usar dentro de una condición." 
+        },
+        { 
+    code: `// Objetivo: Recorrer un arreglo y mostrar sus elementos
+Definir numeros, i Como Entero;
+Dimension numeros[3];
+numeros[0] <- 10;
+numeros[1] <- 20;
+numeros[2] <- 30;
+i <- 0;
+Mientras i <= 3 Hacer
+    Escribir numeros[i];   // ERROR: Cuando i = 3, el índice está fuera de rango
+    i <- i + 1;
+FinMientras`,
+    type: "ejecucion", 
+    explanation: "ERROR DE EJECUCIÓN: El arreglo 'numeros' tiene dimension 3, por lo tanto sus índices válidos son 0, 1 y 2. El bucle 'Mientras i <= 3 Hacer' intenta acceder al índice 3 cuando i=3, lo que genera un error de 'índice fuera de rango' en tiempo de ejecución. Para corregirlo, la condición debe ser 'Mientras i < 3 Hacer'." 
+},
+        { 
+            code: `// Objetivo: Restar un número a un texto
+texto = "Hola"
+numero = 5
+resultado = texto - numero   // ERROR: Tipos incompatibles`,
+            type: "ejecucion", 
+            explanation: "ERROR DE EJECUCIÓN: No se puede restar un número a una cadena de texto. Los tipos de datos son incompatibles." 
+        },
+        
+        // LÓGICOS
+        { 
+            code: `// Objetivo: Calcular el promedio de tres notas
+suma = nota1 + nota2 + nota3
+promedio = suma * 3   // ERROR LÓGICO: Debería ser suma / 3
+escribir(promedio)`,
+            type: "logico", 
+            explanation: "ERROR LÓGICO: La fórmula está mal. El programa corre sin errores pero el resultado será 9 veces mayor al esperado." 
+        },
+        { 
+            code: `// Objetivo: Aprobar si nota >= 7
+si nota > 7 entonces      // ERROR: Excluye la nota 7
+    escribir("Aprobado")
+sino
+    escribir("Desaprobado")
+finsi`,
+            type: "logico", 
+            explanation: "ERROR LÓGICO: La condición '>' excluye el 7. Si nota es 7, aparece 'Desaprobado' cuando debería ser 'Aprobado'." 
+        },
+        { 
+    code: `// Objetivo: Contar cuántas veces aparece el número 5 en una lista
+contador <- 0;
+Para i <- 0 Hasta 4 Hacer
+    Si lista[i] = 5 Entonces
+        contador <- contador + 1;
+        i <- i + 1;   // ERROR: Modificar la variable de control dentro del bucle
+    FinSi
+FinPara
+Escribir "El 5 aparece ", contador, " veces";`,
+    type: "logico", 
+    explanation: "ERROR LÓGICO: Dentro del bucle se modifica la variable de control 'i' al sumarle 1 adicional. Esto hace que el programa salte elementos sin evaluarlos. La sintaxis es correcta, pero el resultado será incorrecto porque no se recorren todas las posiciones de la lista." 
+},
+        { 
+            code: `// Objetivo: Calcular (10+20)/2 = 15
+total = 10 + 20 / 2   // ERROR: Prioridad de operadores. Da 20 (20/2=10, 10+10=20)`,
+            type: "logico", 
+            explanation: "ERROR LÓGICO: La división tiene prioridad sobre la suma. Se debe usar paréntesis: (10+20)/2." 
+        },
+        { 
+            code: `// Objetivo: Verificar si edad >= 18 O tiene permiso
+si (edad >= 18) y (tiene_permiso) entonces   // ERROR: Debería ser 'o'
+    escribir("Puede ingresar")
+finsi`,
+            type: "logico", 
+            explanation: "ERROR LÓGICO: Se usa 'y' (AND) cuando la lógica correcta es 'o' (OR). Con 'y' se exigen ambas condiciones innecesariamente." 
+        },
+        { 
+            code: `// Objetivo: Calcular velocidad = distancia / tiempo
+velocidad = tiempo / distancia   // ERROR: Fórmula invertida`,
+            type: "logico", 
+            explanation: "ERROR LÓGICO: La fórmula de velocidad es distancia/tiempo. Invertir numerador y denominador da un resultado incorrecto." 
+        }
+    ];
 
-    // Obtener ubicación actual
-    function obtenerMiUbicacion() {
-        const divResultado = document.getElementById('miUbicacion');
-        divResultado.innerHTML = '<p>Obteniendo ubicación... (pedile permiso al navegador)</p>';
-        
-        if (!navigator.geolocation) {
-            divResultado.innerHTML = '<div class="error">Tu navegador no soporta geolocalización.</div>';
+    // Estado del juego
+    let currentStack = [];
+    let aciertos = 0;
+    let totalInicial = 0;
+    let currentItem = null;
+    let waitingForAnswer = true;
+    let answerLocked = false;
+    let feedbackTimeout = null;
+
+    const problemArea = document.getElementById('problemArea');
+    const aciertosSpan = document.getElementById('aciertosCount');
+    const totalBaseSpan = document.getElementById('totalBase');
+
+    function updateCounters() {
+        aciertosSpan.innerText = aciertos;
+        const resueltos = totalInicial - currentStack.length;
+        document.getElementById('totalResueltos').innerHTML = `aciertos / ${totalInicial}`;
+        totalBaseSpan.innerText = totalInicial;
+    }
+
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function initGame() {
+        if (feedbackTimeout) clearTimeout(feedbackTimeout);
+        currentStack = ERROR_POOL.map(item => ({ ...item }));
+        currentStack = shuffleArray(currentStack);
+        totalInicial = currentStack.length;
+        aciertos = 0;
+        updateCounters();
+        if (currentStack.length > 0) {
+            currentItem = { ...currentStack[0] };
+            renderCurrentProblem();
+        } else {
+            renderGameComplete();
+        }
+        waitingForAnswer = true;
+        answerLocked = false;
+    }
+
+    function escapeHtmlCode(str) {
+        // Preserva formato pero escapa caracteres peligrosos
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/\\n/g, '\n');
+    }
+
+    function renderCurrentProblem() {
+        if (!currentItem) {
+            if (currentStack.length === 0) renderGameComplete();
+            else { currentItem = { ...currentStack[0] }; renderCurrentProblem(); }
             return;
         }
+
+        let rawCode = currentItem.code;
+        let displayCode = escapeHtmlCode(rawCode);
         
-        navigator.geolocation.getCurrentPosition(
-            function(posicion) {
-                const lat = posicion.coords.latitude;
-                const lon = posicion.coords.longitude;
-                const precision = posicion.coords.accuracy;
-                ultimaLat = lat;
-                ultimaLon = lon;
-                
-                divResultado.innerHTML = `
-                    <div class="coordenada">
-                        Latitud: ${lat.toFixed(6)}°<br>
-                        Longitud: ${lon.toFixed(6)}°
-                    </div>
-                    <div class="info">
-                        Precisión: ±${precision.toFixed(1)} metros<br>
-                        Fuente: GPS + redes
-                    </div>
-                    <button class="boton boton-secundario" style="margin-top:10px;" onclick="copiarCoordenadas('${lat}', '${lon}')">
-                        Copiar coordenadas al portapapeles
-                    </button>
-                `;
-            },
-            function(error) {
-                let mensaje = "";
-                switch(error.code) {
-                    case 1:
-                        mensaje = "Permiso denegado. Activá la ubicación en tu navegador.";
-                        break;
-                    case 2:
-                        mensaje = "No se pudo obtener la ubicación (señal GPS débil).";
-                        break;
-                    case 3:
-                        mensaje = "Tiempo de espera agotado. Intentá de nuevo.";
-                        break;
-                    default:
-                        mensaje = "Error desconocido.";
-                }
-                divResultado.innerHTML = `<div class="error">${mensaje}</div>`;
-            },
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-        );
-    }
-    
-    // Copiar coordenadas al portapapeles
-    function copiarCoordenadas(lat, lon) {
-        const texto = `${lat}, ${lon}`;
-        navigator.clipboard.writeText(texto).then(() => {
-            alert(`Coordenadas copiadas: ${texto}`);
-        }).catch(() => {
-            alert("No se pudo copiar automáticamente. Copialas manualmente.");
-        });
-    }
-    
-    // Usar GPS actual en punto A
-    function usarGPSenA() {
-        if (ultimaLat === null || ultimaLon === null) {
-            alert("Primero obtené tu ubicación con 'Obtener mi GPS'");
-            return;
-        }
-        document.getElementById('latA').value = ultimaLat.toFixed(6);
-        document.getElementById('lonA').value = ultimaLon.toFixed(6);
-        alert("Punto A actualizado con tu ubicación GPS");
-    }
-    
-    // Usar GPS actual en punto B
-    function usarGPSenB() {
-        if (ultimaLat === null || ultimaLon === null) {
-            alert("Primero obtené tu ubicación con 'Obtener mi GPS'");
-            return;
-        }
-        document.getElementById('latB').value = ultimaLat.toFixed(6);
-        document.getElementById('lonB').value = ultimaLon.toFixed(6);
-        alert("Punto B actualizado con tu ubicación GPS");
-    }
-    
-    // Intercambiar puntos A y B
-    function intercambiarPuntos() {
-        const latA = document.getElementById('latA').value;
-        const lonA = document.getElementById('lonA').value;
-        const latB = document.getElementById('latB').value;
-        const lonB = document.getElementById('lonB').value;
-        
-        document.getElementById('latA').value = latB;
-        document.getElementById('lonA').value = lonB;
-        document.getElementById('latB').value = latA;
-        document.getElementById('lonB').value = lonA;
-        
-        alert("Puntos intercambiados");
-        calcularDistancias(); // auto-calcular
-    }
-    
-    // Calcular ambas distancias
-    function calcularDistancias() {
-        let lat1 = parseFloat(document.getElementById('latA').value);
-        let lon1 = parseFloat(document.getElementById('lonA').value);
-        let lat2 = parseFloat(document.getElementById('latB').value);
-        let lon2 = parseFloat(document.getElementById('lonB').value);
-        
-        // Validar entradas
-        if (isNaN(lat1) || isNaN(lon1) || isNaN(lat2) || isNaN(lon2)) {
-            document.getElementById('resultados').innerHTML = `
-                <div class="error">
-                    Ingresá números válidos en las coordenadas.
+        const html = `
+            <div class="problem-card">
+                <div class="error-badge">ANALIZÁ ESTE PSEUDOCÓDIGO</div>
+                <div class="code-block"><pre>${displayCode}</pre></div>
+                <div class="options">
+                    <button class="option-btn sintaxis-btn" data-type="sintaxis" id="btnSintaxis">SINTAXIS</button>
+                    <button class="option-btn ejecucion-btn" data-type="ejecucion" id="btnEjecucion">EJECUCIÓN</button>
+                    <button class="option-btn logico-btn" data-type="logico" id="btnLogico">LÓGICO</button>
                 </div>
-            `;
-            return;
-        }
-        
-        // Distancia Euclidiana
-        const difLat = lat2 - lat1;
-        const difLon = lon2 - lon1;
-        const distanciaEuclidiana = Math.sqrt(difLat*difLat + difLon*difLon);
-        
-        // Distancia Manhattan
-        const distanciaManhattan = Math.abs(lat2 - lat1) + Math.abs(lon2 - lon1);
-        
-        // Mostrar resultados
-        document.getElementById('resultados').innerHTML = `
-            <div class="resultado" style="background: #3498db;">
-                <strong>Distancia Euclidiana</strong> (línea recta)<br>
-                = √(Δlat² + Δlon²)<br>
-                = <span style="font-size: 1.3em;">${distanciaEuclidiana.toFixed(8)}</span> grados
-            </div>
-            <div class="resultado" style="background: #e67e22;">
-                <strong>Distancia Manhattan</strong> (cuadrícula)<br>
-                = |Δlat| + |Δlon|<br>
-                = <span style="font-size: 1.3em;">${distanciaManhattan.toFixed(8)}</span> grados
-            </div>
-            <div class="info">
-                <strong>Diferencia:</strong> ${(distanciaManhattan - distanciaEuclidiana).toFixed(8)} grados<br>
-                <strong>Aproximación a metros:</strong> 1° ≈ 111 km →<br>
-                Euclidiana ≈ ${(distanciaEuclidiana * 111000).toFixed(2)} metros<br>
-                Manhattan ≈ ${(distanciaManhattan * 111000).toFixed(2)} metros
+                <div id="feedbackMsg" class="feedback"></div>
+                <div class="action-buttons">
+                    <button id="skipBtn" class="next-btn">Siguiente problema</button>
+                    <button id="resetGameBtn" class="reset-btn">⟳ Reiniciar</button>
+                </div>
             </div>
         `;
+        
+        problemArea.innerHTML = html;
+        
+        const btnSint = document.getElementById('btnSintaxis');
+        const btnEjec = document.getElementById('btnEjecucion');
+        const btnLog = document.getElementById('btnLogico');
+        const skipBtn = document.getElementById('skipBtn');
+        const resetBtn = document.getElementById('resetGameBtn');
+        
+        const enableBtns = () => {
+            if (btnSint) btnSint.disabled = false;
+            if (btnEjec) btnEjec.disabled = false;
+            if (btnLog) btnLog.disabled = false;
+        };
+        const disableBtns = () => {
+            if (btnSint) btnSint.disabled = true;
+            if (btnEjec) btnEjec.disabled = true;
+            if (btnLog) btnLog.disabled = true;
+        };
+        
+        if (!waitingForAnswer || answerLocked) disableBtns();
+        else enableBtns();
+        
+        if (btnSint) btnSint.addEventListener('click', () => handleAnswer('sintaxis', disableBtns));
+        if (btnEjec) btnEjec.addEventListener('click', () => handleAnswer('ejecucion', disableBtns));
+        if (btnLog) btnLog.addEventListener('click', () => handleAnswer('logico', disableBtns));
+        if (skipBtn) skipBtn.addEventListener('click', () => forceNextProblem());
+        if (resetBtn) resetBtn.addEventListener('click', () => resetGame());
     }
     
-    // Calcular automático al cargar
-    window.onload = function() {
-        calcularDistancias();
-    };
+    function tipoToTexto(tipo) {
+        if (tipo === 'sintaxis') return 'SINTAXIS (no arranca)';
+        if (tipo === 'ejecucion') return 'EJECUCIÓN (se rompe al correr)';
+        return 'LÓGICO (corre pero da mal resultado)';
+    }
+    
+    function handleAnswer(selected, disableBtns) {
+        if (!waitingForAnswer || answerLocked || !currentItem) return;
+        answerLocked = true;
+        waitingForAnswer = false;
+        disableBtns();
+        
+        const isCorrect = (selected === currentItem.type);
+        const feedbackDiv = document.getElementById('feedbackMsg');
+        
+        if (isCorrect) {
+            // Acierto: eliminar de la pila
+            const idx = currentStack.findIndex(item => item.code === currentItem.code && item.type === currentItem.type);
+            if (idx !== -1) currentStack.splice(idx, 1);
+            aciertos++;
+            updateCounters();
+            
+            feedbackDiv.innerHTML = `
+                <div><strong>¡CORRECTO!</strong> Es un error de ${tipoToTexto(selected)}.</div>
+                <div class="explanation-box"><strong>Explicación detallada:</strong> ${currentItem.explanation}</div>
+                <div class="explanation-box" style="border-top-color:#4ade80;"><strong>¿Cómo corregirlo?</strong> Revisá la barra lateral para ver acciones específicas según el tipo de error.</div>
+            `;
+            feedbackDiv.className = "feedback feedback-success";
+            
+            if (currentStack.length === 0) {
+                if (feedbackTimeout) clearTimeout(feedbackTimeout);
+                feedbackTimeout = setTimeout(() => renderGameComplete(), 2000);
+            } else {
+                if (feedbackTimeout) clearTimeout(feedbackTimeout);
+                feedbackTimeout = setTimeout(() => loadNextProblem(), 2500);
+            }
+        } else {
+            // Incorrecto: mover al final de la pila
+            const idx = currentStack.findIndex(item => item.code === currentItem.code && item.type === currentItem.type);
+            if (idx !== -1) {
+                const [wrong] = currentStack.splice(idx, 1);
+                currentStack.push(wrong);
+            } else {
+                currentStack.push({ ...currentItem });
+            }
+            
+            const correctText = tipoToTexto(currentItem.type);
+            feedbackDiv.innerHTML = `
+                <div><strong>INCORRECTO.</strong> El tipo correcto es "${correctText}".</div>
+                <div class="explanation-box"><strong>Explicación:</strong> ${currentItem.explanation}</div>
+                <div class="explanation-box" style="border-top-color:#ef4444;"><strong>Pista:</strong> Revisá la definición en la barra lateral. El error volverá a aparecer más adelante.</div>
+            `;
+            feedbackDiv.className = "feedback feedback-error";
+            
+            // No avanzamos automáticamente, pero habilitamos el botón "Siguiente" para que el usuario continúe cuando quiera.
+            waitingForAnswer = true;
+            answerLocked = false;
+            // Re-habilitar botones? No, los botones de respuesta siguen deshabilitados hasta que se cargue otro problema.
+            // El usuario debe usar "Siguiente problema" para continuar.
+            const skip = document.getElementById('skipBtn');
+            if (skip) skip.disabled = false;
+        }
+    }
+    
+    function loadNextProblem() {
+        if (feedbackTimeout) clearTimeout(feedbackTimeout);
+        if (currentStack.length === 0) {
+            renderGameComplete();
+            return;
+        }
+        currentItem = { ...currentStack[0] };
+        waitingForAnswer = true;
+        answerLocked = false;
+        renderCurrentProblem();
+    }
+    
+    function forceNextProblem() {
+        if (feedbackTimeout) clearTimeout(feedbackTimeout);
+        if (currentItem && !answerLocked) {
+            // Si aún no respondió y quiere saltar, movemos el error al final igualmente
+            const idx = currentStack.findIndex(item => item.code === currentItem.code && item.type === currentItem.type);
+            if (idx !== -1) {
+                const [skipItem] = currentStack.splice(idx, 1);
+                currentStack.push(skipItem);
+            } else if (currentItem) {
+                currentStack.push({ ...currentItem });
+            }
+        }
+        loadNextProblem();
+    }
+    
+    function renderGameComplete() {
+        const porcentaje = totalInicial > 0 ? Math.round((aciertos / totalInicial) * 100) : 100;
+        problemArea.innerHTML = `
+            <div class="problem-card" style="text-align: center;">
+                <div class="error-badge" style="background: #4ade80;">¡JUEGO COMPLETADO!</div>
+                <div style="font-size: 2.5rem; margin: 1rem 0;"></div>
+                <h2 style="color: #e2e8f0;">Clasificaste todos los errores</h2>
+                <p style="margin: 1rem 0; color:#a5f3c3;">Aciertos totales: ${aciertos} de ${totalInicial} (${porcentaje}%)</p>
+                <button id="resetFinalBtn" class="reset-btn" style="background:#3b82f6;">Reiniciar juego</button>
+            </div>
+        `;
+        const resetFinal = document.getElementById('resetFinalBtn');
+        if (resetFinal) resetFinal.addEventListener('click', () => resetGame());
+    }
+    
+    function resetGame() {
+        if (feedbackTimeout) clearTimeout(feedbackTimeout);
+        initGame();
+    }
+    
+    initGame();
 </script>
-
 </body>
 </html>

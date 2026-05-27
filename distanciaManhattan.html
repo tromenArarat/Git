@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>GPS Topográfica - Distancias Euclidiana y Manhattan</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f0f4f8;
+        }
+        h1 {
+            color: #1a5f7a;
+            text-align: center;
+            font-size: 1.8em;
+        }
+        h2 {
+            color: #2c3e50;
+            font-size: 1.2em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .coordenada {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            background: #e8f0fe;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .boton {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            width: 100%;
+            margin: 5px 0;
+        }
+        .boton:hover {
+            background: #2980b9;
+        }
+        .boton-secundario {
+            background: #95a5a6;
+        }
+        .resultado {
+            background: #2ecc71;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        .error {
+            background: #e74c3c;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .info {
+            background: #ecf0f1;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+        .grupoflex {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .grupoflex button {
+            flex: 1;
+        }
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .coordenada { font-size: 1em; }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Topografía GPS</h1>
+<p style="text-align: center; color: #555;">Distancia Euclidiana vs Distancia Manhattan</p>
+
+<!-- Panel de GPS actual -->
+<div class="card">
+    <h2>Mi ubicación actual</h2>
+    <button class="boton" onclick="obtenerMiUbicacion()">Obtener mi GPS</button>
+    <div id="miUbicacion">
+        <p style="color: #7f8c8d; text-align: center;">Presioná el botón para obtener tus coordenadas</p>
+    </div>
+    <div class="info">
+        <strong>¿Sin GPS?</strong> Podés usar coordenadas de ejemplo más abajo.
+    </div>
+</div>
+
+<!-- Punto A y B -->
+<div class="card">
+    <h2>Puntos para calcular distancia</h2>
+    
+    <label>Punto A - Latitud:</label>
+    <input type="text" id="latA" placeholder="Ej: -34.603722" value="-34.603722">
+    <label>Punto A - Longitud:</label>
+    <input type="text" id="lonA" placeholder="Ej: -58.381592" value="-58.381592">
+    
+    <label style="margin-top: 15px;">Punto B - Latitud:</label>
+    <input type="text" id="latB" placeholder="Ej: -34.603900" value="-34.603900">
+    <label>Punto B - Longitud:</label>
+    <input type="text" id="lonB" placeholder="Ej: -58.382000" value="-58.382000">
+    
+    <div class="grupoflex">
+        <button class="boton" onclick="intercambiarPuntos()">Intercambiar A↔B</button>
+        <button class="boton boton-secundario" onclick="usarGPSenA()">Usar GPS en A</button>
+        <button class="boton boton-secundario" onclick="usarGPSenB()">Usar GPS en B</button>
+    </div>
+</div>
+
+<!-- Calcular distancias -->
+<div class="card">
+    <h2>Calcular distancias</h2>
+    <button class="boton" onclick="calcularDistancias()">Calcular</button>
+    
+    <div id="resultados">
+        <p style="color: #7f8c8d; text-align: center;">Presioná "Calcular" para ver los resultados</p>
+    </div>
+</div>
+
+<!-- Actividad didáctica -->
+<div class="card">
+    <h2>Reflexión para tu cuaderno</h2>
+    <div class="info">
+        <strong>Respondé en tu grupo:</strong><br>
+        1. ¿Cuál de las dos distancias es más grande? ¿Por qué?<br>
+        2. Si estuvieras caminando por calles de una ciudad (manzanas), ¿qué distancia representa mejor tu recorrido?<br>
+        3. ¿Cómo cambiarían los valores si convirtieras grados a metros?<br>
+        4. ¿Qué tipo de error podrías tener si olvidás usar valor absoluto en Manhattan?
+    </div>
+</div>
+
+<script>
+    // Variables para guardar la última ubicación GPS
+    let ultimaLat = null;
+    let ultimaLon = null;
+
+    // Obtener ubicación actual
+    function obtenerMiUbicacion() {
+        const divResultado = document.getElementById('miUbicacion');
+        divResultado.innerHTML = '<p>Obteniendo ubicación... (pedile permiso al navegador)</p>';
+        
+        if (!navigator.geolocation) {
+            divResultado.innerHTML = '<div class="error">Tu navegador no soporta geolocalización.</div>';
+            return;
+        }
+        
+        navigator.geolocation.getCurrentPosition(
+            function(posicion) {
+                const lat = posicion.coords.latitude;
+                const lon = posicion.coords.longitude;
+                const precision = posicion.coords.accuracy;
+                ultimaLat = lat;
+                ultimaLon = lon;
+                
+                divResultado.innerHTML = `
+                    <div class="coordenada">
+                        Latitud: ${lat.toFixed(6)}°<br>
+                        Longitud: ${lon.toFixed(6)}°
+                    </div>
+                    <div class="info">
+                        Precisión: ±${precision.toFixed(1)} metros<br>
+                        Fuente: GPS + redes
+                    </div>
+                    <button class="boton boton-secundario" style="margin-top:10px;" onclick="copiarCoordenadas('${lat}', '${lon}')">
+                        Copiar coordenadas al portapapeles
+                    </button>
+                `;
+            },
+            function(error) {
+                let mensaje = "";
+                switch(error.code) {
+                    case 1:
+                        mensaje = "Permiso denegado. Activá la ubicación en tu navegador.";
+                        break;
+                    case 2:
+                        mensaje = "No se pudo obtener la ubicación (señal GPS débil).";
+                        break;
+                    case 3:
+                        mensaje = "Tiempo de espera agotado. Intentá de nuevo.";
+                        break;
+                    default:
+                        mensaje = "Error desconocido.";
+                }
+                divResultado.innerHTML = `<div class="error">${mensaje}</div>`;
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+        );
+    }
+    
+    // Copiar coordenadas al portapapeles
+    function copiarCoordenadas(lat, lon) {
+        const texto = `${lat}, ${lon}`;
+        navigator.clipboard.writeText(texto).then(() => {
+            alert(`Coordenadas copiadas: ${texto}`);
+        }).catch(() => {
+            alert("No se pudo copiar automáticamente. Copialas manualmente.");
+        });
+    }
+    
+    // Usar GPS actual en punto A
+    function usarGPSenA() {
+        if (ultimaLat === null || ultimaLon === null) {
+            alert("Primero obtené tu ubicación con 'Obtener mi GPS'");
+            return;
+        }
+        document.getElementById('latA').value = ultimaLat.toFixed(6);
+        document.getElementById('lonA').value = ultimaLon.toFixed(6);
+        alert("Punto A actualizado con tu ubicación GPS");
+    }
+    
+    // Usar GPS actual en punto B
+    function usarGPSenB() {
+        if (ultimaLat === null || ultimaLon === null) {
+            alert("Primero obtené tu ubicación con 'Obtener mi GPS'");
+            return;
+        }
+        document.getElementById('latB').value = ultimaLat.toFixed(6);
+        document.getElementById('lonB').value = ultimaLon.toFixed(6);
+        alert("Punto B actualizado con tu ubicación GPS");
+    }
+    
+    // Intercambiar puntos A y B
+    function intercambiarPuntos() {
+        const latA = document.getElementById('latA').value;
+        const lonA = document.getElementById('lonA').value;
+        const latB = document.getElementById('latB').value;
+        const lonB = document.getElementById('lonB').value;
+        
+        document.getElementById('latA').value = latB;
+        document.getElementById('lonA').value = lonB;
+        document.getElementById('latB').value = latA;
+        document.getElementById('lonB').value = lonA;
+        
+        alert("Puntos intercambiados");
+        calcularDistancias(); // auto-calcular
+    }
+    
+    // Calcular ambas distancias
+    function calcularDistancias() {
+        let lat1 = parseFloat(document.getElementById('latA').value);
+        let lon1 = parseFloat(document.getElementById('lonA').value);
+        let lat2 = parseFloat(document.getElementById('latB').value);
+        let lon2 = parseFloat(document.getElementById('lonB').value);
+        
+        // Validar entradas
+        if (isNaN(lat1) || isNaN(lon1) || isNaN(lat2) || isNaN(lon2)) {
+            document.getElementById('resultados').innerHTML = `
+                <div class="error">
+                    Ingresá números válidos en las coordenadas.
+                </div>
+            `;
+            return;
+        }
+        
+        // Distancia Euclidiana
+        const difLat = lat2 - lat1;
+        const difLon = lon2 - lon1;
+        const distanciaEuclidiana = Math.sqrt(difLat*difLat + difLon*difLon);
+        
+        // Distancia Manhattan
+        const distanciaManhattan = Math.abs(lat2 - lat1) + Math.abs(lon2 - lon1);
+        
+        // Mostrar resultados
+        document.getElementById('resultados').innerHTML = `
+            <div class="resultado" style="background: #3498db;">
+                <strong>Distancia Euclidiana</strong> (línea recta)<br>
+                = √(Δlat² + Δlon²)<br>
+                = <span style="font-size: 1.3em;">${distanciaEuclidiana.toFixed(8)}</span> grados
+            </div>
+            <div class="resultado" style="background: #e67e22;">
+                <strong>Distancia Manhattan</strong> (cuadrícula)<br>
+                = |Δlat| + |Δlon|<br>
+                = <span style="font-size: 1.3em;">${distanciaManhattan.toFixed(8)}</span> grados
+            </div>
+            <div class="info">
+                <strong>Diferencia:</strong> ${(distanciaManhattan - distanciaEuclidiana).toFixed(8)} grados<br>
+                <strong>Aproximación a metros:</strong> 1° ≈ 111 km →<br>
+                Euclidiana ≈ ${(distanciaEuclidiana * 111000).toFixed(2)} metros<br>
+                Manhattan ≈ ${(distanciaManhattan * 111000).toFixed(2)} metros
+            </div>
+        `;
+    }
+    
+    // Calcular automático al cargar
+    window.onload = function() {
+        calcularDistancias();
+    };
+</script>
+
+</body>
+</html>
