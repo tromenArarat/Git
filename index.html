@@ -18,80 +18,140 @@
             padding: 20px;
         }
 
-        /* Layout principal con barra lateral */
         .main-layout {
             display: flex;
             gap: 1.5rem;
             max-width: 1400px;
             margin: 0 auto;
             align-items: flex-start;
+            position: relative;
         }
 
-        /* Barra lateral fija (sticky) */
+        .hamburger-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: #1e293b;
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border: 1px solid #38bdf8;
+        }
+        .hamburger-btn span {
+            width: 28px;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+            transition: 0.3s;
+        }
+        .hamburger-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        .hamburger-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
         .sidebar {
-            flex: 0 0 300px;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(8px);
+            flex: 0 0 320px;
+            background: #0a0e1a;
+            backdrop-filter: blur(12px);
             border-radius: 1.5rem;
-            padding: 1.2rem;
-            border: 1px solid #334155;
+            padding: 1.5rem;
+            border: 1px solid #2d3a5e;
             position: sticky;
             top: 20px;
             height: fit-content;
             max-height: calc(100vh - 40px);
             overflow-y: auto;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 10px;
         }
 
         .sidebar h3 {
-            color: #f0f9ff;
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
+            color: #ffffff;
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
             border-bottom: 2px solid #38bdf8;
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.6rem;
+            font-weight: bold;
+            text-shadow: 0 1px 2px black;
         }
 
         .error-def {
             margin-bottom: 1.8rem;
-            padding: 0.8rem;
+            padding: 1rem;
             border-radius: 1rem;
-            background: rgba(0,0,0,0.3);
+            background: #111827;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
         .error-def h4 {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            margin-bottom: 0.6rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            font-weight: bold;
+            color: #f1f5f9;
         }
 
         .error-def p {
             font-size: 0.85rem;
             color: #cbd5e6;
-            margin-bottom: 0.5rem;
-            line-height: 1.4;
+            margin-bottom: 0.6rem;
+            line-height: 1.5;
         }
 
         .error-def .example {
             background: #020617;
-            padding: 0.4rem;
-            border-radius: 0.5rem;
+            padding: 0.6rem;
+            border-radius: 0.6rem;
             font-family: monospace;
             font-size: 0.75rem;
-            margin: 0.5rem 0;
+            margin: 0.6rem 0;
             color: #e2e8f0;
+            border-left: 3px solid;
         }
 
         .error-def .fix {
             color: #4ade80;
             font-size: 0.8rem;
-            margin-top: 0.3rem;
+            margin-top: 0.4rem;
+            font-weight: 500;
         }
 
-        .sintaxis-def { border-left: 4px solid #ef4444; }
-        .ejecucion-def { border-left: 4px solid #f97316; }
-        .logico-def { border-left: 4px solid #eab308; }
+        .sintaxis-def { border-left: 4px solid #ef4444; background: #1a0f0f; }
+        .ejecucion-def { border-left: 4px solid #f97316; background: #1a120c; }
+        .logico-def { border-left: 4px solid #eab308; background: #1a180c; }
+        
+        .sintaxis-def h4 span { color: #ef4444; }
+        .ejecucion-def h4 span { color: #f97316; }
+        .logico-def h4 span { color: #eab308; }
 
         .game-container {
             flex: 1;
@@ -276,53 +336,93 @@
             border-top: 1px dashed #334155;
         }
 
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 998;
+            backdrop-filter: blur(2px);
+        }
+
         @media (max-width: 850px) {
-            .main-layout { flex-direction: column; }
+            .hamburger-btn {
+                display: flex;
+            }
             .sidebar {
-                flex: auto;
-                position: relative;
+                position: fixed;
                 top: 0;
+                left: 0;
+                transform: translateX(-100%);
+                width: 280px;
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+                z-index: 1000;
+                margin: 0;
+                padding-top: 70px;
+                background: #0a0e1a;
+                border-right: 1px solid #38bdf8;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .sidebar-overlay.active {
+                display: block;
+            }
+            .main-layout {
+                padding-left: 0;
+            }
+            .game-container {
+                margin-left: 0;
                 width: 100%;
-                max-height: none;
+            }
+            body {
+                padding: 70px 12px 20px 12px;
             }
         }
     </style>
 </head>
 <body>
+    <button class="hamburger-btn" id="hamburgerBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <div class="main-layout">
-    <!-- BARRA LATERAL CON DEFINICIONES Y ACCIONES -->
-    <div class="sidebar">
-        <h3>GUÍA DE ERRORES</h3>
+    <div class="sidebar" id="sidebar">
+        <h3>GUIA DE ERRORES</h3>
         
         <div class="error-def sintaxis-def">
             <h4><span style="color:#ef4444;">Ø</span> ERROR DE SINTAXIS</h4>
-            <p><strong>¿Qué es?</strong> No se siguen las reglas del lenguaje utilizado. El programa NO PUEDE EJECUTARSE.</p>
-            <div class="example">Ejemplo: <code>si x menorQue 5 entonces</code> (debería ser <code>x < 5</code>)</div>
-            <p><strong>🔧 Cómo corregirlo:</strong> Revisar ortografía de palabras clave, operadores, estructura de bloques (finsi, fin_mientras), comillas en textos, paréntesis.</p>
-            <div class="fix">Acción: Comparar con la sintaxis correcta de PSeInt.</div>
+            <p><strong>¿Que es?</strong> No se siguen las reglas del lenguaje utilizado. El programa NO PUEDE EJECUTARSE.</p>
+            <div class="example">Ejemplo: <code>si x menorQue 5 entonces</code> (deberia ser <code>x < 5</code>)</div>
+            <p><strong>Como corregirlo:</strong> Revisar ortografia de palabras clave, operadores, estructura de bloques (finsi, fin_mientras), comillas en textos, parentesis.</p>
+            <div class="fix">Accion: Comparar con la sintaxis correcta de PSeInt.</div>
         </div>
 
         <div class="error-def ejecucion-def">
-            <h4><span style="color:#f97316;">Ø</span> ERROR DE EJECUCIÓN</h4>
-            <p><strong>¿Qué es?</strong> El programa arranca pero se DETIENE por una operación imposible en tiempo de ejecución.</p>
-            <div class="example">Ejemplo: <code>resultado = 100 / 0</code> (división por cero)</div>
-            <p><strong>🔧 Cómo corregirlo:</strong> Validar datos de entrada (evitar división por cero o raiz cuadrada de negativos), verificar índices de listas, inicializar variables, evitar bucles infinitos.</p>
-            <div class="fix">Acción: Agregar controles condicionales antes de operaciones riesgosas.</div>
+            <h4><span style="color:#f97316;">Ø</span> ERROR DE EJECUCION</h4>
+            <p><strong>¿Que es?</strong> El programa arranca pero se DETIENE por una operacion imposible en tiempo de ejecucion.</p>
+            <div class="example">Ejemplo: <code>resultado = 100 / 0</code> (division por cero)</div>
+            <p><strong>Como corregirlo:</strong> Validar datos de entrada (evitar division por cero o raiz cuadrada de negativos), verificar indices de listas, inicializar variables, evitar bucles infinitos.</p>
+            <div class="fix">Accion: Agregar controles condicionales antes de operaciones riesgosas.</div>
         </div>
 
         <div class="error-def logico-def">
-            <h4><span style="color:#eab308;">Ø</span> ERROR LÓGICO</h4>
-            <p><strong>¿Qué es?</strong> El programa CORRE pero da un RESULTADO INCORRECTO. Es el más difícil de detectar.</p>
-            <div class="example">Ejemplo: <code>promedio = suma * 3</code> (debería ser <code>suma / 3</code>)</div>
-            <p><strong>🔧 Cómo corregirlo:</strong> Revisar fórmulas matemáticas, condiciones de comparación (>=, >, <), operadores lógicos (y/o), inicialización de acumuladores.</p>
-            <div class="fix">Acción: Probar con casos conocidos y verificar resultados esperados.</div>
-        </div>
-        <div style="margin-top: 1rem; font-size:0.7rem; color:#5b6e8c; text-align:center;">
-            💡 Cada error tiene explicación detallada al responder
+            <h4><span style="color:#eab308;">Ø</span> ERROR LOGICO</h4>
+            <p><strong>¿Que es?</strong> El programa CORRE pero da un RESULTADO INCORRECTO. Es el mas dificil de detectar.</p>
+            <div class="example">Ejemplo: <code>promedio = suma * 3</code> (deberia ser <code>suma / 3</code>)</div>
+            <p><strong>Como corregirlo:</strong> Revisar formulas matematicas, condiciones de comparacion (>=, >, <), operadores logicos (y/o), inicializacion de acumuladores.</p>
+            <div class="fix">Accion: Probar con casos conocidos y verificar resultados esperados.</div>
         </div>
     </div>
 
-    <!-- CONTENEDOR PRINCIPAL DEL JUEGO -->
     <div class="game-container" id="gameRoot">
         <div class="score-header">
             <div class="title-box">
@@ -336,82 +436,76 @@
         </div>
         <div id="problemArea"></div>
         <footer class="custom-footer">
-            Introducción a la Informática - Tecnicatura Universitaria en Topografía
+            Introduccion a la Informatica - Tecnicatura Universitaria en Topografia
         </footer>
     </div>
 </div>
 
 <script>
-    // ==============================================================
-    // BASE DE ERRORES con comentarios aclaratorios en el código
-    // y explicación completa para cada uno.
-    // ==============================================================
     const ERROR_POOL = [
-        // SINTAXIS
         { 
             code: `// Objetivo: Comparar si x es menor que 5
 si x menorQue 5 entonces    // ERROR: < se usa para comparar
     escribir("x es menor que 5")
 finsi`,
             type: "sintaxis", 
-            explanation: "ERROR DE SINTAXIS: En pseudocódigo la comparación se realiza con <. Usar menorQue dentro de un 'si' no es reconocido como una sintaxis válida. El programa NO PUEDE ejecutarse." 
+            explanation: "ERROR DE SINTAXIS: En pseudocodigo la comparacion se realiza con <. Usar menorQue dentro de un 'si' no es reconocido como una sintaxis valida. El programa NO PUEDE ejecutarse." 
         },
         { 
-            code: `// Objetivo: Guardar el resultado de una operación entre a y b
+            code: `// Objetivo: Guardar el resultado de una operacion entre a y b
 resultado = a b      // ERROR: Falta el operador (+, -, *, /) entre a y b`,
             type: "sintaxis", 
-            explanation: "ERROR DE SINTAXIS: Falta un operador aritmético. El intérprete no sabe qué hacer con dos variables seguidas." 
+            explanation: "ERROR DE SINTAXIS: Falta un operador aritmetico. El interprete no sabe que hacer con dos variables seguidas." 
         },
         { 
             code: `// Objetivo: Decidir un saludo
 si hora < 24 entonces
-    escribir("Buen día")
+    escribir("Buen dia")
 // ERROR: Falta el 'finsi' que cierra la estructura condicional`,
             type: "sintaxis", 
-            explanation: "ERROR DE SINTAXIS: La estructura 'si' debe cerrarse con 'finsi'. Sin él, el lenguaje no reconoce el final del bloque." 
+            explanation: "ERROR DE SINTAXIS: La estructura 'si' debe cerrarse con 'finsi'. Sin el, el lenguaje no reconoce el final del bloque." 
         },
         { 
-            code: `// Objetivo: Mostrar números del 0 al 9
-mientras i < 10 hacé    // ERROR: 'hacé' no es una palabra clave válida
+            code: `// Objetivo: Mostrar numeros del 0 al 9
+mientras i < 10 hace    // ERROR: 'hace' no es una palabra clave valida
     escribir(i)
     i = i + 1
 fin_mientras`,
             type: "sintaxis", 
-            explanation: "ERROR DE SINTAXIS: La palabra correcta es 'hacer', no 'hacé'. Una palabra mal escrita invalida toda la estructura." 
+            explanation: "ERROR DE SINTAXIS: La palabra correcta es 'hacer', no 'hace'. Una palabra mal escrita invalida toda la estructura." 
         },
         { 
             code: `// Objetivo: Aprobar si nota es mayor o igual a 7
-si nota => 7 entonces   // ERROR: '=>' no es un operador válido
+si nota => 7 entonces   // ERROR: '=>' no es un operador valido
     escribir("Aprobado")
 finsi`,
             type: "sintaxis", 
             explanation: "ERROR DE SINTAXIS: El operador correcto para 'mayor o igual que' es '>='. '=>' no existe." 
         },
         
-        // EJECUCIÓN
         { 
-            code: `// Objetivo: Calcular 100 dividido un número ingresado
+            code: `// Objetivo: Calcular 100 dividido un numero ingresado
 leer(n)           // Usuario ingresa 0
-resultado = 100 / n   // ERROR: División por cero en tiempo de ejecución
+resultado = 100 / n   // ERROR: Division por cero en tiempo de ejecucion
 escribir(resultado)`,
             type: "ejecucion", 
-            explanation: "ERROR DE EJECUCIÓN: La sintaxis es correcta, pero si el usuario ingresa 0 ocurre una división por cero. El programa se detiene abruptamente." 
+            explanation: "ERROR DE EJECUCION: La sintaxis es correcta, pero si el usuario ingresa 0 ocurre una division por cero. El programa se detiene abruptamente." 
         },
         { 
             code: `// Objetivo: Mostrar el tercer elemento de una lista
-lista = [10, 20, 30]   // Índices válidos: 0, 1, 2
-escribir(lista[5])     // ERROR: Índice 5 fuera de rango`,
+lista = [10, 20, 30]   // Indices validos: 0, 1, 2
+escribir(lista[5])     // ERROR: Indice 5 fuera de rango`,
             type: "ejecucion", 
-            explanation: "ERROR DE EJECUCIÓN: Se intenta acceder a un índice inexistente. La lista solo tiene 3 elementos." 
+            explanation: "ERROR DE EJECUCION: Se intenta acceder a un indice inexistente. La lista solo tiene 3 elementos." 
         },
         { 
-            code: `// Objetivo: Mostrar números del 0 al 9
+            code: `// Objetivo: Mostrar numeros del 0 al 9
 mientras i < 10 hacer   // ERROR: La variable 'i' no fue inicializada
     escribir(i)
     i = i + 1
 fin_mientras`,
             type: "ejecucion", 
-            explanation: "ERROR DE EJECUCIÓN: La variable 'i' no tiene valor inicial. No se puede usar dentro de una condición." 
+            explanation: "ERROR DE EJECUCION: La variable 'i' no tiene valor inicial. No se puede usar dentro de una condicion." 
         },
         { 
     code: `// Objetivo: Recorrer un arreglo y mostrar sus elementos
@@ -422,29 +516,28 @@ numeros[1] <- 20;
 numeros[2] <- 30;
 i <- 0;
 Mientras i <= 3 Hacer
-    Escribir numeros[i];   // ERROR: Cuando i = 3, el índice está fuera de rango
+    Escribir numeros[i];   // ERROR: Cuando i = 3, el indice esta fuera de rango
     i <- i + 1;
 FinMientras`,
     type: "ejecucion", 
-    explanation: "ERROR DE EJECUCIÓN: El arreglo 'numeros' tiene dimension 3, por lo tanto sus índices válidos son 0, 1 y 2. El bucle 'Mientras i <= 3 Hacer' intenta acceder al índice 3 cuando i=3, lo que genera un error de 'índice fuera de rango' en tiempo de ejecución. Para corregirlo, la condición debe ser 'Mientras i < 3 Hacer'." 
+    explanation: "ERROR DE EJECUCION: El arreglo 'numeros' tiene dimension 3, por lo tanto sus indices validos son 0, 1 y 2. El bucle 'Mientras i <= 3 Hacer' intenta acceder al indice 3 cuando i=3, lo que genera un error de 'indice fuera de rango' en tiempo de ejecucion. Para corregirlo, la condicion debe ser 'Mientras i < 3 Hacer'." 
 },
         { 
-            code: `// Objetivo: Restar un número a un texto
+            code: `// Objetivo: Restar un numero a un texto
 texto = "Hola"
 numero = 5
 resultado = texto - numero   // ERROR: Tipos incompatibles`,
             type: "ejecucion", 
-            explanation: "ERROR DE EJECUCIÓN: No se puede restar un número a una cadena de texto. Los tipos de datos son incompatibles." 
+            explanation: "ERROR DE EJECUCION: No se puede restar un numero a una cadena de texto. Los tipos de datos son incompatibles." 
         },
         
-        // LÓGICOS
         { 
             code: `// Objetivo: Calcular el promedio de tres notas
 suma = nota1 + nota2 + nota3
-promedio = suma * 3   // ERROR LÓGICO: Debería ser suma / 3
+promedio = suma * 3   // ERROR: Deberia ser suma / 3
 escribir(promedio)`,
             type: "logico", 
-            explanation: "ERROR LÓGICO: La fórmula está mal. El programa corre sin errores pero el resultado será 9 veces mayor al esperado." 
+            explanation: "ERROR LOGICO: La formula esta mal. El programa corre sin errores pero el resultado sera 9 veces mayor al esperado." 
         },
         { 
             code: `// Objetivo: Aprobar si nota >= 7
@@ -454,10 +547,10 @@ sino
     escribir("Desaprobado")
 finsi`,
             type: "logico", 
-            explanation: "ERROR LÓGICO: La condición '>' excluye el 7. Si nota es 7, aparece 'Desaprobado' cuando debería ser 'Aprobado'." 
+            explanation: "ERROR LOGICO: La condicion '>' excluye el 7. Si nota es 7, aparece 'Desaprobado' cuando deberia ser 'Aprobado'." 
         },
         { 
-    code: `// Objetivo: Contar cuántas veces aparece el número 5 en una lista
+    code: `// Objetivo: Contar cuantas veces aparece el numero 5 en una lista
 contador <- 0;
 Para i <- 0 Hasta 4 Hacer
     Si lista[i] = 5 Entonces
@@ -467,31 +560,24 @@ Para i <- 0 Hasta 4 Hacer
 FinPara
 Escribir "El 5 aparece ", contador, " veces";`,
     type: "logico", 
-    explanation: "ERROR LÓGICO: Dentro del bucle se modifica la variable de control 'i' al sumarle 1 adicional. Esto hace que el programa salte elementos sin evaluarlos. La sintaxis es correcta, pero el resultado será incorrecto porque no se recorren todas las posiciones de la lista." 
+    explanation: "ERROR: Dentro del bucle se modifica la variable de control 'i' al sumarle 1 adicional. Esto hace que el programa salte elementos sin evaluarlos. La sintaxis es correcta, pero el resultado sera incorrecto porque no se recorren todas las posiciones de la lista." 
 },
         { 
             code: `// Objetivo: Calcular (10+20)/2 = 15
 total = 10 + 20 / 2   // ERROR: Prioridad de operadores. Da 20 (20/2=10, 10+10=20)`,
             type: "logico", 
-            explanation: "ERROR LÓGICO: La división tiene prioridad sobre la suma. Se debe usar paréntesis: (10+20)/2." 
+            explanation: "ERROR: La division tiene prioridad sobre la suma. Se debe usar parentesis: (10+20)/2." 
         },
         { 
             code: `// Objetivo: Verificar si edad >= 18 O tiene permiso
-si (edad >= 18) y (tiene_permiso) entonces   // ERROR: Debería ser 'o'
+si (edad >= 18) y (tiene_permiso) entonces   // ERROR: Deberia ser 'o'
     escribir("Puede ingresar")
 finsi`,
             type: "logico", 
-            explanation: "ERROR LÓGICO: Se usa 'y' (AND) cuando la lógica correcta es 'o' (OR). Con 'y' se exigen ambas condiciones innecesariamente." 
-        },
-        { 
-            code: `// Objetivo: Calcular velocidad = distancia / tiempo
-velocidad = tiempo / distancia   // ERROR: Fórmula invertida`,
-            type: "logico", 
-            explanation: "ERROR LÓGICO: La fórmula de velocidad es distancia/tiempo. Invertir numerador y denominador da un resultado incorrecto." 
+            explanation: "ERROR LOGICO: Se usa 'y' (AND) cuando la logica correcta es 'o' (OR). Con 'y' se exigen ambas condiciones innecesariamente." 
         }
     ];
 
-    // Estado del juego
     let currentStack = [];
     let aciertos = 0;
     let totalInicial = 0;
@@ -506,7 +592,6 @@ velocidad = tiempo / distancia   // ERROR: Fórmula invertida`,
 
     function updateCounters() {
         aciertosSpan.innerText = aciertos;
-        const resueltos = totalInicial - currentStack.length;
         document.getElementById('totalResueltos').innerHTML = `aciertos / ${totalInicial}`;
         totalBaseSpan.innerText = totalInicial;
     }
@@ -537,13 +622,12 @@ velocidad = tiempo / distancia   // ERROR: Fórmula invertida`,
     }
 
     function escapeHtmlCode(str) {
-        // Preserva formato pero escapa caracteres peligrosos
         return str.replace(/[&<>]/g, function(m) {
             if (m === '&') return '&amp;';
             if (m === '<') return '&lt;';
             if (m === '>') return '&gt;';
             return m;
-        }).replace(/\\n/g, '\n');
+        });
     }
 
     function renderCurrentProblem() {
@@ -553,22 +637,21 @@ velocidad = tiempo / distancia   // ERROR: Fórmula invertida`,
             return;
         }
 
-        let rawCode = currentItem.code;
-        let displayCode = escapeHtmlCode(rawCode);
+        let displayCode = escapeHtmlCode(currentItem.code);
         
         const html = `
             <div class="problem-card">
-                <div class="error-badge">ANALIZÁ ESTE PSEUDOCÓDIGO</div>
+                <div class="error-badge">ANALIZA ESTE PSEUDOCODIGO</div>
                 <div class="code-block"><pre>${displayCode}</pre></div>
                 <div class="options">
                     <button class="option-btn sintaxis-btn" data-type="sintaxis" id="btnSintaxis">SINTAXIS</button>
-                    <button class="option-btn ejecucion-btn" data-type="ejecucion" id="btnEjecucion">EJECUCIÓN</button>
-                    <button class="option-btn logico-btn" data-type="logico" id="btnLogico">LÓGICO</button>
+                    <button class="option-btn ejecucion-btn" data-type="ejecucion" id="btnEjecucion">EJECUCION</button>
+                    <button class="option-btn logico-btn" data-type="logico" id="btnLogico">LOGICO</button>
                 </div>
                 <div id="feedbackMsg" class="feedback"></div>
                 <div class="action-buttons">
                     <button id="skipBtn" class="next-btn">Siguiente problema</button>
-                    <button id="resetGameBtn" class="reset-btn">⟳ Reiniciar</button>
+                    <button id="resetGameBtn" class="reset-btn">Reiniciar</button>
                 </div>
             </div>
         `;
@@ -604,8 +687,8 @@ velocidad = tiempo / distancia   // ERROR: Fórmula invertida`,
     
     function tipoToTexto(tipo) {
         if (tipo === 'sintaxis') return 'SINTAXIS (no arranca)';
-        if (tipo === 'ejecucion') return 'EJECUCIÓN (se rompe al correr)';
-        return 'LÓGICO (corre pero da mal resultado)';
+        if (tipo === 'ejecucion') return 'EJECUCION (se rompe al correr)';
+        return 'LOGICO (corre pero da mal resultado)';
     }
     
     function handleAnswer(selected, disableBtns) {
@@ -618,16 +701,15 @@ velocidad = tiempo / distancia   // ERROR: Fórmula invertida`,
         const feedbackDiv = document.getElementById('feedbackMsg');
         
         if (isCorrect) {
-            // Acierto: eliminar de la pila
             const idx = currentStack.findIndex(item => item.code === currentItem.code && item.type === currentItem.type);
             if (idx !== -1) currentStack.splice(idx, 1);
             aciertos++;
             updateCounters();
             
             feedbackDiv.innerHTML = `
-                <div><strong>¡CORRECTO!</strong> Es un error de ${tipoToTexto(selected)}.</div>
-                <div class="explanation-box"><strong>Explicación detallada:</strong> ${currentItem.explanation}</div>
-                <div class="explanation-box" style="border-top-color:#4ade80;"><strong>¿Cómo corregirlo?</strong> Revisá la barra lateral para ver acciones específicas según el tipo de error.</div>
+                <div><strong>CORRECTO!</strong> Es un error de ${tipoToTexto(selected)}.</div>
+                <div class="explanation-box"><strong>Explicacion detallada:</strong> ${currentItem.explanation}</div>
+                <div class="explanation-box" style="border-top-color:#4ade80;"><strong>Como corregirlo?</strong> Revisa la barra lateral para ver acciones especificas segun el tipo de error.</div>
             `;
             feedbackDiv.className = "feedback feedback-success";
             
@@ -636,10 +718,9 @@ velocidad = tiempo / distancia   // ERROR: Fórmula invertida`,
                 feedbackTimeout = setTimeout(() => renderGameComplete(), 2000);
             } else {
                 if (feedbackTimeout) clearTimeout(feedbackTimeout);
-                feedbackTimeout = setTimeout(() => loadNextProblem(), 2500);
+                feedbackTimeout = setTimeout(() => loadNextProblem(), 5500);
             }
         } else {
-            // Incorrecto: mover al final de la pila
             const idx = currentStack.findIndex(item => item.code === currentItem.code && item.type === currentItem.type);
             if (idx !== -1) {
                 const [wrong] = currentStack.splice(idx, 1);
@@ -651,16 +732,13 @@ velocidad = tiempo / distancia   // ERROR: Fórmula invertida`,
             const correctText = tipoToTexto(currentItem.type);
             feedbackDiv.innerHTML = `
                 <div><strong>INCORRECTO.</strong> El tipo correcto es "${correctText}".</div>
-                <div class="explanation-box"><strong>Explicación:</strong> ${currentItem.explanation}</div>
-                <div class="explanation-box" style="border-top-color:#ef4444;"><strong>Pista:</strong> Revisá la definición en la barra lateral. El error volverá a aparecer más adelante.</div>
+                <div class="explanation-box"><strong>Explicacion:</strong> ${currentItem.explanation}</div>
+                <div class="explanation-box" style="border-top-color:#ef4444;"><strong>Pista:</strong> Revisa la definicion en la barra lateral. El error volvera a aparecer mas adelante.</div>
             `;
             feedbackDiv.className = "feedback feedback-error";
             
-            // No avanzamos automáticamente, pero habilitamos el botón "Siguiente" para que el usuario continúe cuando quiera.
             waitingForAnswer = true;
             answerLocked = false;
-            // Re-habilitar botones? No, los botones de respuesta siguen deshabilitados hasta que se cargue otro problema.
-            // El usuario debe usar "Siguiente problema" para continuar.
             const skip = document.getElementById('skipBtn');
             if (skip) skip.disabled = false;
         }
@@ -681,7 +759,6 @@ velocidad = tiempo / distancia   // ERROR: Fórmula invertida`,
     function forceNextProblem() {
         if (feedbackTimeout) clearTimeout(feedbackTimeout);
         if (currentItem && !answerLocked) {
-            // Si aún no respondió y quiere saltar, movemos el error al final igualmente
             const idx = currentStack.findIndex(item => item.code === currentItem.code && item.type === currentItem.type);
             if (idx !== -1) {
                 const [skipItem] = currentStack.splice(idx, 1);
@@ -697,8 +774,8 @@ velocidad = tiempo / distancia   // ERROR: Fórmula invertida`,
         const porcentaje = totalInicial > 0 ? Math.round((aciertos / totalInicial) * 100) : 100;
         problemArea.innerHTML = `
             <div class="problem-card" style="text-align: center;">
-                <div class="error-badge" style="background: #4ade80;">¡JUEGO COMPLETADO!</div>
-                <div style="font-size: 2.5rem; margin: 1rem 0;"></div>
+                <div class="error-badge" style="background: #4ade80;">JUEGO COMPLETADO</div>
+                <div style="font-size: 2.5rem; margin: 1rem 0;"> </div>
                 <h2 style="color: #e2e8f0;">Clasificaste todos los errores</h2>
                 <p style="margin: 1rem 0; color:#a5f3c3;">Aciertos totales: ${aciertos} de ${totalInicial} (${porcentaje}%)</p>
                 <button id="resetFinalBtn" class="reset-btn" style="background:#3b82f6;">Reiniciar juego</button>
@@ -711,6 +788,23 @@ velocidad = tiempo / distancia   // ERROR: Fórmula invertida`,
     function resetGame() {
         if (feedbackTimeout) clearTimeout(feedbackTimeout);
         initGame();
+    }
+    
+    const hamburger = document.getElementById('hamburgerBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+        hamburger.classList.toggle('active');
+    }
+    
+    if (hamburger) {
+        hamburger.addEventListener('click', toggleSidebar);
+    }
+    if (overlay) {
+        overlay.addEventListener('click', toggleSidebar);
     }
     
     initGame();
