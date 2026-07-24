@@ -1,0 +1,50 @@
+
+#mapa {
+    height: 800px;
+    width: 100%;
+    border: 2px solid #333;
+    border-radius: 8px;
+}
+
+body {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+.info {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.leyenda-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    border: 1px solid #333;
+}
