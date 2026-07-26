@@ -1,12 +1,80 @@
 var mimapa = document.getElementById("mapa");
+mimapa = L.map('mapa', {
+    zoomControl: true,
+    fadeAnimation: true,
+    zoomAnimation: true
+}).setView([-37.372246, -70.274423], 13);
 
-mimapa = L.map('mapa').setView([-37.372246, -70.274423], 13);
-osm = L.tileLayer('https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{-y}.png', {
+// Capa base
+var osm = L.tileLayer('https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{-y}.png', {
     attribution: '<a href="http://www.ign.gob.ar/AreaServicios/Argenmap/IntroduccionV2" target="_blank">Instituto Geográfico Nacional</a> + <a href="http://www.osm.org/copyright" target="_blank">OpenStreetMap</a>',
     minZoom: 3,
     maxZoom: 30
 }).addTo(mimapa);
 
+// Control de ubicación
+var locateControl = L.control({position: 'topleft'});
+locateControl.onAdd = function(map) {
+    var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+    div.innerHTML = `
+        <svg viewBox="0 0 24 24" width="24" height="24" style="margin-top:8px;">
+            <circle cx="12" cy="12" r="10" fill="none" stroke="#333" stroke-width="1.5"/>
+            <polygon points="12,2 15,10 12,8 9,10" fill="#E74C3C"/>
+            <polygon points="12,22 15,14 12,16 9,14" fill="#333"/>
+            <circle cx="12" cy="12" r="2" fill="#333"/>
+        </svg>
+    `;
+    div.style.backgroundColor = 'white';
+    div.style.width = '40px';
+    div.style.height = '40px';
+    div.style.lineHeight = '40px';
+    div.style.textAlign = 'center';
+    div.style.fontSize = '24px';
+    div.style.cursor = 'pointer';
+    div.style.borderRadius = '4px';
+    div.style.boxShadow = '0 1px 5px rgba(0,0,0,0.65)';
+    
+    div.onclick = function() {
+        mimapa.locate({setView: true, maxZoom: 16});
+    };
+    
+    return div;
+};
+locateControl.addTo(mimapa);
+
+// Geolocalización
+mimapa.locate({setView: true, maxZoom: 16});
+
+function onLocationFound(e) {
+    var radius = e.accuracy;
+    
+    // Reducir el radio a la mitad o a un valor fijo
+    // var radius = Math.min(e.accuracy, 50); // Máximo 50 metros
+    var radius = e.accuracy / 10; // La mitad de la precisión
+    // o usar un valor fijo: var radius = 20; // 20 metros fijos
+    
+    L.marker(e.latlng).addTo(mimapa)
+        .bindPopup("Estás aquí").openPopup();
+
+    // Círculo con el radio reducido
+    L.circle(e.latlng, radius, {
+        color: '#4285F4',
+        fillColor: '#4285F4',
+        fillOpacity: 0.15,
+        weight: 2,
+        opacity: 0.5
+    }).addTo(mimapa);
+}
+
+mimapa.on('locationfound', onLocationFound);
+
+function onLocationError(e) {
+    alert('No se pudo obtener tu ubicación: ' + e.message);
+}
+
+mimapa.on('locationerror', onLocationError);
+
+/*
 var marcador = L.marker([-37.372246, -70.274423]).addTo(mimapa);
 marcador.bindPopup("¡Acá estamos!").openPopup();
 
@@ -21,7 +89,7 @@ function onMapClick(e) {
 
 mimapa.on('click', onMapClick);
 
-
+*/
 
 barriosCHM = {
 "type": "FeatureCollection",
@@ -50,34 +118,30 @@ barriosCHM = {
 ]
 }
 
-L.geoJson(barriosCHM);
-
+// Funciones de estilo
 function getColor(feature) {
-    // Accedemos al nombre del barrio desde las propiedades
     var nombre = feature.properties.nombre;
-    
-    // Definimos un color para cada barrio
     switch(nombre) {
-        case "DON BOSCO": return '#FF0000'; // Rojo
-        case "CHACRAS NORTE": return '#0000FF'; // Azul
-        case "LAS VERTIENTES": return '#00CC00'; // Verde
-        case "RUTA 40": return '#FFA500'; // Naranja
-        case "URIBURU": return '#800080'; // Púrpura
-        case "CORDILLERA DEL VIENTO": return '#FF69B4'; // Rosa
-        case "TIRO FEDERAL": return '#00BFFF'; // Celeste
-        case "PARQUE LA HOYA": return '#32CD32'; // Lima
-        case "JARDIN": return '#FFD700'; // Dorado
-        case "AREA CENTRO": return '#8B4513'; // Marrón
-        case "AGUA ESCONDIDA": return '#2F4F4F'; // Gris oscuro
-        case "ÁREA DE FRONTERA": return '#DC143C'; // Carmesí
-        case "LAS FLORES": return '#FFB6C1'; // Rosa claro
-        case "ALTOS DEL SOL": return '#F0E68C'; // Caqui
-        case "IV DIVISIÓN": return '#6A5ACD'; // Azul pizarra
-        case "CANALITO": return '#00CED1'; // Turquesa oscuro
-        case "CENTENARIO I": return '#DAA520'; // Oro oscuro
-        case "CENTENARIO II": return '#B8860B'; // Oro medio
-        case "CHACRA SUR": return '#CD853F'; // Perú
-        default: return '#FFEDA0'; // Color por defecto (amarillo claro)
+        case "DON BOSCO": return '#FF0000';
+        case "CHACRAS NORTE": return '#0000FF';
+        case "LAS VERTIENTES": return '#00CC00';
+        case "RUTA 40": return '#FFA500';
+        case "URIBURU": return '#800080';
+        case "CORDILLERA DEL VIENTO": return '#FF69B4';
+        case "TIRO FEDERAL": return '#00BFFF';
+        case "PARQUE LA HOYA": return '#32CD32';
+        case "JARDIN": return '#FFD700';
+        case "AREA CENTRO": return '#8B4513';
+        case "AGUA ESCONDIDA": return '#2F4F4F';
+        case "ÁREA DE FRONTERA": return '#DC143C';
+        case "LAS FLORES": return '#FFB6C1';
+        case "ALTOS DEL SOL": return '#F0E68C';
+        case "IV DIVISIÓN": return '#6A5ACD';
+        case "CANALITO": return '#00CED1';
+        case "CENTENARIO I": return '#DAA520';
+        case "CENTENARIO II": return '#B8860B';
+        case "CHACRA SUR": return '#CD853F';
+        default: return '#FFEDA0';
     }
 }
 
@@ -93,34 +157,35 @@ function style(feature) {
 }
 
 function onEachFeature(feature, layer) {
-    // Si el feature tiene un nombre, lo mostramos en el popup
     if (feature.properties && feature.properties.nombre) {
         var nombreBarrio = feature.properties.nombre;
         var observacion = feature.properties.observ || "Sin información adicional";
         var esOficial = feature.properties.oficial === "Si" ? "Sí" : "No";
         
         layer.bindPopup(
-            "<b>Barrio: " + nombreBarrio + "</b><br>" +
-            "Oficial: " + esOficial + "<br>" +
-            "Observación: " + observacion
+            `<b>${nombreBarrio}</b><br>
+             <small>${observacion}</small><br>
+             <small>Oficial: ${esOficial}</small>`,
+            {
+                maxWidth: 250,
+                className: 'custom-popup'
+            }
         );
     }
 }
 
-// Añadimos la capa de barrios con estilo y popups
+// Añadir barrios
 var capaBarrios = L.geoJson(barriosCHM, {
     style: style,
     onEachFeature: onEachFeature
 }).addTo(mimapa);
 
-// Leaflet layer control
-
-var baseMaps = {
+// Controles
+L.control.layers({
     'Open Street Map': osm
-}
-
-var overlayMaps = {
-    'Barrios': capaBarrios
-}
-
-L.control.layers(baseMaps,overlayMaps).addTo(mimapa);
+}, {
+    'Barrios de Chos Malal': capaBarrios
+}, {
+    position: 'topleft',
+    collapsed: true
+}).addTo(mimapa);
