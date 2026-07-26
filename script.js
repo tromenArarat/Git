@@ -165,9 +165,7 @@ function onEachFeature(feature, layer) {
         var esOficial = feature.properties.oficial === "Si" ? "Sí" : "No";
         
         layer.bindPopup(
-            `<b>${nombreBarrio}</b><br>
-             <small>${observacion}</small><br>
-             <small>Oficial: ${esOficial}</small>`,
+            `<b>${nombreBarrio}</b><br>`,
             {
                 maxWidth: 250,
                 className: 'custom-popup'
