@@ -104,7 +104,7 @@ function onEachFeature(feature, layer) {
 var capaBarrios = L.geoJson(barriosCHM, {
     style: style,
     onEachFeature: onEachFeature
-}).addTo(mimapa);
+});
 
 
 // Densidad poblacional
@@ -185,8 +185,7 @@ function onEachDensityFeature(feature, layer) {
     // Agregar popup con información de densidad
     var props = feature.properties;
     layer.bindPopup(
-        `<b>Radio: ${props.cod_indec || 'N/A'}</b><br>
-         Población total: ${props.p02_tot || 0}<br>
+        `Población total: ${props.p02_tot || 0}<br>
          Densidad: ${props.dens_pobl || 0} hab/ha`
     );
 }
@@ -195,7 +194,7 @@ function onEachDensityFeature(feature, layer) {
 var densityLayer = L.geoJson(dne, {
     style: densityStyle,
     onEachFeature: onEachDensityFeature
-}).addTo(mimapa);
+});
 
 // Agregar leyenda de densidad
 var legend = L.control({position: 'bottomright'});
@@ -224,7 +223,7 @@ L.control.layers({
     'Satelital': Esri_WorldImagery
 }, {
     'Barrios de Chos Malal': capaBarrios,
-    'Densidad poblacional': densityLayer  // Usar la variable correcta
+    'Densidad poblacional': densityLayer
 }, {
     position: 'topleft',
     collapsed: true
