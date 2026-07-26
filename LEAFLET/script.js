@@ -12,6 +12,7 @@ var osm = L.tileLayer('https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/ca
     maxZoom: 30
 }).addTo(mimapa);
 
+/*
 // Control de ubicación
 var locateControl = L.control({position: 'topleft'});
 locateControl.onAdd = function(map) {
@@ -73,6 +74,7 @@ function onLocationError(e) {
 }
 
 mimapa.on('locationerror', onLocationError);
+*/
 
 /*
 var marcador = L.marker([-37.372246, -70.274423]).addTo(mimapa);
