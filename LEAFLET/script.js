@@ -1,7 +1,7 @@
 var mimapa = document.getElementById("mapa");
 
 mimapa = L.map('mapa').setView([-37.372246, -70.274423], 13);
-L.tileLayer('https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{-y}.png', {
+osm = L.tileLayer('https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{-y}.png', {
     attribution: '<a href="http://www.ign.gob.ar/AreaServicios/Argenmap/IntroduccionV2" target="_blank">Instituto Geográfico Nacional</a> + <a href="http://www.osm.org/copyright" target="_blank">OpenStreetMap</a>',
     minZoom: 3,
     maxZoom: 30
@@ -50,7 +50,7 @@ barriosCHM = {
 ]
 }
 
-L.geoJson(barriosCHM).addTo(mimapa);
+L.geoJson(barriosCHM);
 
 function getColor(feature) {
     // Accedemos al nombre del barrio desde las propiedades
@@ -108,7 +108,19 @@ function onEachFeature(feature, layer) {
 }
 
 // Añadimos la capa de barrios con estilo y popups
-L.geoJson(barriosCHM, {
+var capaBarrios = L.geoJson(barriosCHM, {
     style: style,
     onEachFeature: onEachFeature
 }).addTo(mimapa);
+
+// Leaflet layer control
+
+var baseMaps = {
+    'Open Street Map': osm
+}
+
+var overlayMaps = {
+    'Barrios': capaBarrios
+}
+
+L.control.layers(baseMaps,overlayMaps).addTo(mimapa);
