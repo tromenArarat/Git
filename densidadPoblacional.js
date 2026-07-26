@@ -24,3 +24,58 @@ dne = {
 ]
 }
 L.geoJson(dne).addTo(mimapa);
+
+
+function getColor(dens_pobl) {
+    return dens_pobl > 85 ? '#800026' :
+           dens_pobl > 65  ? '#BD0026' :
+           dens_pobl > 45  ? '#E31A1C' :
+           dens_pobl > 25  ? '#FC4E2A' :
+           dens_pobl > 5   ? '#FD8D3C' :
+           '#FFEDA0';
+}
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.density),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+L.geoJson(statesData, {style: style}).addTo(mimapa);
+
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    layer.bringToFront();
+}
+
+function resetHighlight(e) {
+    dne.resetStyle(e.target);
+}
+
+function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+}
+
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+    });
+}
+
+dne = L.geoJson(statesData, {
+    style: style,
+    onEachFeature: onEachFeature
+}).addTo(mimapa);
