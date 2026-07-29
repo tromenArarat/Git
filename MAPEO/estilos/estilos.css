@@ -80,3 +80,24 @@ h1 {
     margin-right: 8px;
     opacity: 0.7;
 }
+
+/* ============================================ */
+/* ESTILOS DE LOS SÍMBOLOS EN LA LEYENDA        */
+/* ============================================ */
+.icono-restaurante { background: #E74C3C; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #C0392B; }
+.icono-restobar { background: #E67E22; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #D35400; }
+.icono-rotiseria { background: #F1C40F; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #F39C12; }
+.icono-panaderia { background: #F39C12; width: 18px; height: 18px; border-radius: 0; transform: rotate(45deg); margin-right: 12px; border: 2px solid #D68910; }
+.icono-cerveceria { background: #8E44AD; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #6C3483; }
+.icono-cafe_bar { background: #2C3E50; width: 16px; height: 16px; border-radius: 4px; margin-right: 12px; border: 2px solid #1A252F; }
+.icono-cafeteria { background: #16A085; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #0E6655; }
+.icono-drugstore { background: #7F8C8D; width: 16px; height: 16px; border-radius: 4px; margin-right: 12px; border: 2px solid #566573; }
+.icono-comedor { background: #D35400; width: 18px; height: 18px; border-radius: 0; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); margin-right: 12px; border: none; }
+.icono-pasteleria { background: #FF6B9D; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #E74C8B; }
+.icono-pizzeria { background: #C0392B; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #922B21; }
+.icono-heladeria { background: #3498DB; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #2471A3; }
+.icono-bar { background: #2C3E50; width: 16px; height: 16px; border-radius: 0; margin-right: 12px; border: 2px dashed #1A252F; }
+.icono-parador { background: #27AE60; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #1E8449; }
+.icono-parrilla { background: #D35400; width: 20px; height: 20px; border-radius: 0; margin-right: 12px; border: 3px solid #A04000; transform: rotate(45deg); }
+.icono-discoteca { background: #8E44AD; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px dashed #6C3483; }
+.icono-otros { background: #95A5A6; width: 14px; height: 14px; border-radius: 50%; margin-right: 12px; border: 2px dashed #566573; }

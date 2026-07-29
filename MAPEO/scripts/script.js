@@ -103,7 +103,7 @@ function onEachFeature(feature, layer) {
 // Añadir barrios
 var capaBarrios = L.geoJson(barriosCHM, {
     style: style,
-    attribution: 'Barrios de Chos Malal de la Dirección Provincial de Estadística Neuquén',
+    attribution: 'Dirección Provincial de Estadística Neuquén',
     onEachFeature: onEachFeature
 });
 
@@ -194,7 +194,7 @@ function onEachDensityFeature(feature, layer) {
 // Crear la capa de densidad con la variable correcta
 var densityLayer = L.geoJson(dne, {
     style: densityStyle,
-    attribution: 'Densidad poblacional por radio censal 2022',
+    attribution: 'Censo Nacional 2022',
     onEachFeature: onEachDensityFeature
 });
 
@@ -288,6 +288,33 @@ legend.onAdd = function(map) {
     return div;
 };
 
+var tourismLegend = L.control({position: 'topright'});
+
+tourismLegend.onAdd = function(map) {
+    var div = L.DomUtil.create('div', 'info legend');
+    var items = [
+        {color: '#E74C3C', label: 'restaurante'},
+        {color: '#E67E22', label: 'restobar'},
+        {color: '#F1C40F', label: 'rotisería'},
+        {color: '#F39C12', label: 'panadería'},
+        {color: '#8E44AD', label: 'cervecería / discoteca'},
+        {color: '#2C3E50', label: 'café / bar'},
+        {color: '#16A085', label: 'cafetería'},
+        {color: '#7F8C8D', label: 'drugstore'},
+        {color: '#D35400', label: 'comedor / parrilla'},
+        {color: '#FF6B9D', label: 'pastelería'},
+        {color: '#3498DB', label: 'heladería'},
+        {color: '#27AE60', label: 'parador'},
+        {color: '#95A5A6', label: 'otros'}
+    ];
+
+    div.innerHTML = '<h4>Turismo</h4>';
+    items.forEach(function(item) {
+        div.innerHTML += '<i style="background:' + item.color + '"></i> ' + item.label + '<br>';
+    });
+    return div;
+};
+
 // Mostrar la leyenda solo cuando la capa de densidad está activa
 mimapa.on('overlayadd', function(e) {
     if (e.layer === densityLayer) {
@@ -295,6 +322,9 @@ mimapa.on('overlayadd', function(e) {
     }
     if (e.layer === areaEdificadaLayer) {
         mimapa.addControl(builtLegend);
+    }
+    if (e.layer === turismoLayer) {
+        mimapa.addControl(tourismLegend);
     }
 });
 
@@ -304,6 +334,9 @@ mimapa.on('overlayremove', function(e) {
     }
     if (e.layer === areaEdificadaLayer) {
         mimapa.removeControl(builtLegend);
+    }
+    if (e.layer === turismoLayer) {
+        mimapa.removeControl(tourismLegend);
     }
 });
 
@@ -339,18 +372,710 @@ var areaEdificada = {
 
 areaEdificadaLayer = L.geoJson(areaEdificada, {
     style: areaEdificadaStyle,
-    attribution: 'Área Edificada por barrio según algoritmo Open Buildings desde Google Earth Engine',
+    attribution: 'Open Buildings V3 Poligons desde GEE',
     onEachFeature: onEachAreaEdificadaFeature
 });
+
+turismoCHM = {
+"type": "FeatureCollection",
+"name": "resultado",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Piro",
+        "rubro": "restobar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2576105, -37.3880998, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Postal Norte",
+        "rubro": "restobar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2583686, -37.3883211, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "El Salón",
+        "rubro": "restaurante"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2690795, -37.3843702, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "JR Comidas",
+        "rubro": "restaurante"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2693847, -37.3858013, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "San Expedito",
+        "rubro": "rotiseria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2656025, -37.382912, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Cúrcuma, Cocina Artesanal",
+        "rubro": "rotiseria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.265231, -37.3811196, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Milo",
+        "rubro": "restaurante"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2692383, -37.3815986, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "La Farfalla",
+        "rubro": "restaurante"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2732128, -37.3828684, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "La Nona Comidas",
+        "rubro": "rotiseria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2714669, -37.3798008, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "El Encuentro",
+        "rubro": "restobar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.270666, -37.3798122, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Como en Casa",
+        "rubro": "rotiseria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2675356, -37.3771837, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Rey de la Empanada",
+        "rubro": "rotiseria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2674685, -37.37714, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "La Kika Pizza",
+        "rubro": "comedor"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2660876, -37.3761832, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "La Favela",
+        "rubro": "restaurante"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2696066, -37.3783231, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "The Garrison",
+        "rubro": "cafe_bar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2703255, -37.3780589, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Full ACA",
+        "rubro": "drugstore"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2719657, -37.3794733, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Don Costa",
+        "rubro": "pasteleria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2723197, -37.379388, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Canay",
+        "rubro": "pizzeria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2703993, -37.3774016, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Ale Make",
+        "rubro": "rotiseria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2711879, -37.3768538, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Bahía Café",
+        "rubro": "restaurante"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2718571, -37.377652, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Don Costa Café",
+        "rubro": "cafeteria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2724847, -37.3757763, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Las Delicias de la Traful",
+        "rubro": "panaderia"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.27396, -37.3765714, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Cosas Ricas",
+        "rubro": "panaderia"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2741048, -37.3776627, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Casino Chos Malal",
+        "rubro": "cafeteria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2733431, -37.3780186, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Full YPF",
+        "rubro": "drugstore"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2736076, -37.3748566, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Don Costa",
+        "rubro": "heladeria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2745808, -37.3758537, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "La Familia",
+        "rubro": "rotiseria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2748142, -37.3753592, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Berlín Club",
+        "rubro": "cafe_bar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2749778, -37.3752505, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Liberty Pub",
+        "rubro": "bar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2746666, -37.3727801, 0.0]
+      }
+    },
+    
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Maná del Cielo",
+        "rubro": "panaderia"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2705423, -37.3760901, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Emanuel",
+        "rubro": "panaderia"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2730582, -37.3724598, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "X Una",
+        "rubro": "cerveceria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2677767, -37.3758545, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "La Bambina",
+        "rubro": "panaderia"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2701424, -37.3779284, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Mocaccino",
+        "rubro": "panaderia"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2656385, -37.3845999, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "La Quimera - Cocina de Autor",
+        "rubro": "restaurante"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2725884, -37.3801497, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Locos x la Comida",
+        "rubro": "comedor"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2650456, -37.3766574, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "La Vieja Estación",
+        "rubro": "parador"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2305853, -37.4023944, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Mi Pago",
+        "rubro": "parrilla"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2438058, -37.308201, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Valhalla - Cerveza Artesanal Food",
+        "rubro": "cerveceria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2733021, -37.3783365, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Nativo",
+        "rubro": "restobar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2665054, -37.3777128, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Kuyen",
+        "rubro": "restaurante"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2724309, -37.3758494, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Maná Eventos Social Club",
+        "rubro": "discoteca"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2639816, -37.3779639, 0.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "KND Punto Cervecero",
+        "rubro": "cerveceria"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.2747478, -37.3784385, 0.0]
+      }
+    }
+  ]
+}
+]
+}
+
+
+ // =============================================
+// 2. DEFINIR LOS ESTILOS SEGÚN RUBRO (ACTUALIZADO)
+// =============================================
+function obtenerEstilo(feature) {
+    const rubro = feature.properties.rubro || 'otros';
+
+    // Configuración de cada rubro (color, tamaño, borde, etc.)
+    const estilos = {
+        'restaurante': {
+            color: '#E74C3C',        // Rojo
+            fillColor: '#E74C3C',
+            fillOpacity: 0.85,
+            weight: 2.5,
+            opacity: 1,
+            radius: 16,              // Grande (destaca)
+        },
+        'restobar': {
+            color: '#E67E22',        // Naranja
+            fillColor: '#E67E22',
+            fillOpacity: 0.85,
+            weight: 2,
+            opacity: 1,
+            radius: 14,
+        },
+        'rotiseria': {
+            color: '#F1C40F',        // Amarillo
+            fillColor: '#F1C40F',
+            fillOpacity: 0.85,
+            weight: 2,
+            opacity: 1,
+            radius: 12,
+        },
+        'panaderia': {
+            color: '#F39C12',        // Naranja claro
+            fillColor: '#F39C12',
+            fillOpacity: 0.85,
+            weight: 2,
+            opacity: 1,
+            radius: 11,
+        },
+        'cerveceria': {
+            color: '#8E44AD',        // Morado
+            fillColor: '#8E44AD',
+            fillOpacity: 0.85,
+            weight: 2.5,
+            opacity: 1,
+            radius: 15,              // Grande para destacar
+            dashArray: null,
+        },
+        'cafe_bar': {
+            color: '#2C3E50',        // Gris oscuro
+            fillColor: '#2C3E50',
+            fillOpacity: 0.8,
+            weight: 2,
+            opacity: 1,
+            radius: 13,
+        },
+        'cafeteria': {
+            color: '#16A085',        // Verde azulado
+            fillColor: '#16A085',
+            fillOpacity: 0.8,
+            weight: 2,
+            opacity: 1,
+            radius: 12,
+        },
+        'drugstore': {
+            color: '#7F8C8D',        // Gris
+            fillColor: '#7F8C8D',
+            fillOpacity: 0.7,
+            weight: 2,
+            opacity: 1,
+            radius: 10,
+        },
+        'comedor': {
+            color: '#D35400',        // Naranja quemado
+            fillColor: '#D35400',
+            fillOpacity: 0.85,
+            weight: 2,
+            opacity: 1,
+            radius: 13,
+        },
+        'pasteleria': {
+            color: '#FF6B9D',        // Rosa
+            fillColor: '#FF6B9D',
+            fillOpacity: 0.8,
+            weight: 2,
+            opacity: 1,
+            radius: 11,
+        },
+        'pizzeria': {
+            color: '#C0392B',        // Rojo oscuro
+            fillColor: '#C0392B',
+            fillOpacity: 0.85,
+            weight: 2.5,
+            opacity: 1,
+            radius: 14,
+        },
+        'heladeria': {
+            color: '#3498DB',        // Azul
+            fillColor: '#3498DB',
+            fillOpacity: 0.8,
+            weight: 2,
+            opacity: 1,
+            radius: 12,
+        },
+        'bar': {
+            color: '#2C3E50',        // Gris oscuro
+            fillColor: '#2C3E50',
+            fillOpacity: 0.9,
+            weight: 2,
+            opacity: 1,
+            radius: 13,
+            dashArray: '3, 3',       // Borde punteado
+        },
+        'parador': {
+            color: '#27AE60',        // Verde
+            fillColor: '#27AE60',
+            fillOpacity: 0.8,
+            weight: 2.5,
+            opacity: 1,
+            radius: 15,              // Grande
+        },
+        'parrilla': {
+            color: '#D35400',        // Naranja quemado
+            fillColor: '#D35400',
+            fillOpacity: 0.9,
+            weight: 3,
+            opacity: 1,
+            radius: 17,              // El más grande
+        },
+        'discoteca': {
+            color: '#8E44AD',        // Morado
+            fillColor: '#8E44AD',
+            fillOpacity: 0.9,
+            weight: 2,
+            opacity: 1,
+            radius: 14,
+            dashArray: '5, 5',       // Borde punteado para destacar
+        },
+        'otros': {
+            color: '#95A5A6',        // Gris claro
+            fillColor: '#95A5A6',
+            fillOpacity: 0.6,
+            weight: 1.5,
+            opacity: 0.8,
+            radius: 10,
+            dashArray: '4, 4',
+        }
+    };
+
+    return estilos[rubro] || estilos['otros'];
+}
+
+        // =============================================
+        // 3. CREAR LOS MARCADORES CON FORMA PERSONALIZADA
+        // =============================================
+        function crearMarcador(feature, latlng) {
+            const rubro = feature.properties.rubro || 'otros';
+            const estilo = obtenerEstilo(feature);
+
+            // Usamos circleMarker para tener control de tamaño y forma
+            // NOTA: Leaflet no soporta formas nativas (cuadrado, triángulo) 
+            // con circleMarker. Para formas complejas usamos L.divIcon.
+            // En esta solución usamos circleMarker con diferentes radios y colores.
+            
+            return L.circleMarker(latlng, {
+                radius: estilo.radius,
+                fillColor: estilo.fillColor,
+                color: estilo.color,
+                weight: estilo.weight || 2,
+                opacity: estilo.opacity || 1,
+                fillOpacity: estilo.fillOpacity || 0.8,
+                dashArray: estilo.dashArray || null
+            });
+        }
+
+// Cargar capa de turismo desde archivo externo y crear la capa GeoJSON
+/*
+var turismoLayer = L.geoJson(turismoCHM, {
+    attribution: 'Municipalidad de Chos Malal',
+    onEachFeature: onEachFeature
+});
+*/
+ var turismoLayer = L.geoJSON(turismoCHM, {
+            // Función para crear cada marcador
+            pointToLayer: function(feature, latlng) {
+                return crearMarcador(feature, latlng);
+            },
+            // Popup con información
+            onEachFeature: function(feature, layer) {
+                const nombre = feature.properties.Name || 'Sin nombre';
+                const rubro = feature.properties.rubro || 'Sin rubro';
+                layer.bindPopup(`
+                    <strong>${nombre}</strong><br>
+                    Rubro: ${rubro}
+                `);
+            },
+            attribution: 'Municipalidad de Chos Malal',
+        })
+
+
+
 
 // Controles
 L.control.layers({
     'Open Street Map': osm,
     'Satelital': Esri_WorldImagery
 }, {
-    'Barrios de Chos Malal': capaBarrios,
+    'Barrios': capaBarrios,
     'Area edificada': areaEdificadaLayer,
-    'Densidad poblacional': densityLayer
+    'Densidad poblacional': densityLayer,
+    'Turismo': turismoLayer
     
 }, {
     position: 'topleft',
@@ -362,6 +1087,10 @@ L.control.scale({
     imperial: false,    // Desactiva pies/millas (opcional)
     position: 'bottomleft'
 }).addTo(mimapa);
+
+
+
+
 
 
 // 1. Crear un control personalizado para el Norte
@@ -376,6 +1105,9 @@ controlNorte.onAdd = function (mimapa) {
 
 // 2. Añadirlo al mapa
 controlNorte.addTo(mimapa);
+
+
+
 
 /*
 // Control de ubicación
