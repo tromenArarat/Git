@@ -370,7 +370,7 @@ var controlNorte = L.control({ position: 'topleft' });
 controlNorte.onAdd = function (mimapa) {
     var div = L.DomUtil.create('div', 'info-norte');
     // Inserta tu imagen de la rosa de los vientos o flecha de norte
-    div.innerHTML = '<img src="/home/tomas/Repositorios/git/Git/MAPEO/img/rosaDeLosVientos.png" style="width: 50px; height: 50px;">';
+    div.innerHTML = '<img src="./img/rosaDeLosVientos.png" style="width: 50px; height: 50px;">';
     return div;
 };
 
