@@ -103,6 +103,7 @@ function onEachFeature(feature, layer) {
 // Añadir barrios
 var capaBarrios = L.geoJson(barriosCHM, {
     style: style,
+    attribution: 'Barrios de Chos Malal de la Dirección Provincial de Estadística Neuquén',
     onEachFeature: onEachFeature
 });
 
@@ -193,6 +194,7 @@ function onEachDensityFeature(feature, layer) {
 // Crear la capa de densidad con la variable correcta
 var densityLayer = L.geoJson(dne, {
     style: densityStyle,
+    attribution: 'Densidad poblacional por radio censal 2022',
     onEachFeature: onEachDensityFeature
 });
 
@@ -337,6 +339,7 @@ var areaEdificada = {
 
 areaEdificadaLayer = L.geoJson(areaEdificada, {
     style: areaEdificadaStyle,
+    attribution: 'Área Edificada por barrio según algoritmo Open Buildings desde Google Earth Engine',
     onEachFeature: onEachAreaEdificadaFeature
 });
 
@@ -346,12 +349,33 @@ L.control.layers({
     'Satelital': Esri_WorldImagery
 }, {
     'Barrios de Chos Malal': capaBarrios,
-    'Densidad poblacional': densityLayer,
-    'Area edificada': areaEdificadaLayer
+    'Area edificada': areaEdificadaLayer,
+    'Densidad poblacional': densityLayer
+    
 }, {
     position: 'topleft',
     collapsed: true
 }).addTo(mimapa);
+
+L.control.scale({
+    metric: true,       // Muestra metros/kilómetros
+    imperial: false,    // Desactiva pies/millas (opcional)
+    position: 'bottomleft'
+}).addTo(mimapa);
+
+
+// 1. Crear un control personalizado para el Norte
+var controlNorte = L.control({ position: 'topleft' });
+
+controlNorte.onAdd = function (mimapa) {
+    var div = L.DomUtil.create('div', 'info-norte');
+    // Inserta tu imagen de la rosa de los vientos o flecha de norte
+    div.innerHTML = '<img src="/home/tomas/Repositorios/git/Git/MAPEO/img/rosaDeLosVientos.png" style="width: 50px; height: 50px;">';
+    return div;
+};
+
+// 2. Añadirlo al mapa
+controlNorte.addTo(mimapa);
 
 /*
 // Control de ubicación
