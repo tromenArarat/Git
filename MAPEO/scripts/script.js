@@ -1099,7 +1099,7 @@ L.control.layers({
     'Satelital': Esri_WorldImagery
 }, {
     'Barrios': capaBarrios,
-    'Area edificada': areaEdificadaLayer,
+    'Área edificada': areaEdificadaLayer,
     'Densidad poblacional': densityLayer,
     'Turismo': turismoLayer,
     'Transporte urbano': urbanoLayer
