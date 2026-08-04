@@ -163,3 +163,32 @@ body {
     overflow: visible !important;
     max-height: none !important;
 }
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .panel-filtros {
+        bottom: 25px !important;
+        left: 5px !important;
+        padding: 4px 8px !important;
+        max-width: 160px !important;
+    }
+    
+    .panel-filtros select {
+        font-size: 10px !important;
+        padding: 2px 4px !important;
+        min-width: 60px !important;
+        max-width: 80px !important;
+    }
+    
+    .leaflet-control-attribution {
+        font-size: 7px !important;
+        padding: 1px 4px !important;
+        line-height: 1.2 !important;
+    }
+    
+    .info-leyenda {
+        font-size: 9px !important;
+        padding: 4px 6px !important;
+        min-width: 80px !important;
+    }
+}
