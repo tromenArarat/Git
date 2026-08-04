@@ -1,103 +1,165 @@
+html,
 body {
-    padding: 0;
-    margin: 0;
-    height: 100%;
     width: 100%;
-}
-
-html, body, #mapa {  /* Cambia #map por #mapa */
     height: 100%;
-    width: 100%;
-    position: relative;
-}
-
-h1 {
-    font-size: 1.2rem;
-    padding: 10px;
     margin: 0;
-    background: #2c3e50;
-    color: white;
-    text-align: center;
-    position: relative;
-    z-index: 1000;
 }
 
 #mapa {
-    height: calc(100% - 60px); /* Resta el espacio del título */
     width: 100%;
+    height: 100vh;
 }
 
-/* Estilos para mejor experiencia táctil */
-.leaflet-touch .leaflet-control-layers,
-.leaflet-touch .leaflet-bar {
-    border: 2px solid rgba(0,0,0,0.2);
-}
-
-.leaflet-touch .leaflet-control-zoom {
-    border: 2px solid rgba(0,0,0,0.2);
-}
-
-.leaflet-touch .leaflet-control-zoom-in,
-.leaflet-touch .leaflet-control-zoom-out {
-    font-size: 22px !important;
-    line-height: 30px !important;
-    width: 40px !important;
-    height: 40px !important;
-}
-
-.custom-popup .leaflet-popup-content-wrapper {
-    border-radius: 8px;
-    box-shadow: 0 3px 14px rgba(0,0,0,0.4);
-}
-
-.custom-popup .leaflet-popup-content {
-    font-size: 14px;
-    line-height: 1.4;
-    padding: 8px 12px;
-}
-
-.info {
-    padding: 6px 8px;
-    font: 14px/16px Arial, Helvetica, sans-serif;
+.panel-filtros {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
     background: white;
-    background: rgba(255,255,255,0.8);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.panel-filtros label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.panel-filtros select {
+    min-width: 180px;
+    padding: 5px;
+}
+
+.cluster-circulo {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid white;
+    border-radius: 50%;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.leyenda-color {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    border-radius: 50%;
+}
+
+/* Estilos para leyendas */
+.info-leyenda {
+    background: white;
+    padding: 10px 15px;
     border-radius: 5px;
-}
-.info h4 {
-    margin: 0 0 5px;
-    color: #777;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    min-width: 150px;
+    max-height: none;  /* Cambiar de 300px a none */
+    overflow-y: visible;  /* Cambiar de auto a visible */
 }
 
-.legend {
-    line-height: 18px;
-    color: #555;
+.info-leyenda h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
 }
-.legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
+
+.info-leyenda div {
+    display: flex;
+    align-items: center;
+    margin: 3px 0;
+    font-size: 12px;
+}
+
+.info-leyenda span {
+    display: inline-block;
+    width: 20px;
+    height: 15px;
     margin-right: 8px;
-    opacity: 0.7;
+    border-radius: 3px;
+    border: 1px solid #999;
+    flex-shrink: 0;
 }
 
-/* ============================================ */
-/* ESTILOS DE LOS SÍMBOLOS EN LA LEYENDA        */
-/* ============================================ */
-.icono-restaurante { background: #E74C3C; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #C0392B; }
-.icono-restobar { background: #E67E22; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #D35400; }
-.icono-rotiseria { background: #F1C40F; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #F39C12; }
-.icono-panaderia { background: #F39C12; width: 18px; height: 18px; border-radius: 0; transform: rotate(45deg); margin-right: 12px; border: 2px solid #D68910; }
-.icono-cerveceria { background: #8E44AD; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #6C3483; }
-.icono-cafe_bar { background: #2C3E50; width: 16px; height: 16px; border-radius: 4px; margin-right: 12px; border: 2px solid #1A252F; }
-.icono-cafeteria { background: #16A085; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #0E6655; }
-.icono-drugstore { background: #7F8C8D; width: 16px; height: 16px; border-radius: 4px; margin-right: 12px; border: 2px solid #566573; }
-.icono-comedor { background: #D35400; width: 18px; height: 18px; border-radius: 0; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); margin-right: 12px; border: none; }
-.icono-pasteleria { background: #FF6B9D; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #E74C8B; }
-.icono-pizzeria { background: #C0392B; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #922B21; }
-.icono-heladeria { background: #3498DB; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #2471A3; }
-.icono-bar { background: #2C3E50; width: 16px; height: 16px; border-radius: 0; margin-right: 12px; border: 2px dashed #1A252F; }
-.icono-parador { background: #27AE60; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px solid #1E8449; }
-.icono-parrilla { background: #D35400; width: 20px; height: 20px; border-radius: 0; margin-right: 12px; border: 3px solid #A04000; transform: rotate(45deg); }
-.icono-discoteca { background: #8E44AD; width: 18px; height: 18px; border-radius: 50%; margin-right: 12px; border: 2px dashed #6C3483; }
-.icono-otros { background: #95A5A6; width: 14px; height: 14px; border-radius: 50%; margin-right: 12px; border: 2px dashed #566573; }
+/* Estilos para el filtro compacto */
+.panel-filtros {
+    position: absolute;
+    bottom: 20px;
+    left: 60px;
+    background: white;
+    padding: 8px 8px;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+    display: none;
+    max-width: 300px; 
+    max-height: 25px;
+}
+
+.filtro-contenedor {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap; 
+}
+
+.panel-filtros select {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    background: white;
+    min-width: 120px;
+    max-width: 150px;  /* Select de tamaño limitado */
+    cursor: pointer;
+}
+.panel-filtros select:hover {
+    border-color: #999;
+}
+
+.panel-filtros select:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+/* Opcional: hacer el filtro más pequeño en dispositivos móviles */
+@media (max-width: 768px) {
+    .panel-filtros {
+        bottom: 10px;
+        left: 10px;
+        padding: 6px 12px;
+        max-width: 200px;
+    }
+    
+    .panel-filtros label {
+        font-size: 11px;
+    }
+    
+    .panel-filtros select {
+        font-size: 11px;
+        padding: 3px 6px;
+        min-width: 80px;
+        max-width: 100px;
+    }
+}
+
+/* Quitar scroll del layer control */
+.leaflet-control-layers {
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+.leaflet-control-layers-list {
+    overflow: visible !important;
+    max-height: none !important;
+}

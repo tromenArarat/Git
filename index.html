@@ -1,35 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa de Chos Malal</title>
-    <link rel="icon" type="image/x-icon" href="./MAPEO/img/torreon.ico">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin="" />
-    <link rel="stylesheet" href="./MAPEO/estilos/estilos.css">
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
-    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
+    <link rel="icon" href="./MAPEO/img/torreon.ico">
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css"
+    >
+
+    <link rel="stylesheet" href="./MAPEO/estilos/estilos.css">
 </head>
 
 <body>
-    
-    <div id="mapa"></div>
+    <main id="mapa"></main>
 
-    
+    <div id="filtros" class="panel-filtros">
+        <div class="filtro-contenedor">
+            <label for="selectorRubro">Filtrar por rubro:</label>
+            <select id="selectorRubro">
+                <option value="todos">Todos</option>
+                <option value="restaurante">Restaurantes</option>
+                <option value="restobar">Restobares</option>
+                <option value="rotiseria">Rotiserías</option>
+                <option value="panaderia">Panaderías</option>
+                <option value="cerveceria">Cervecerías</option>
+                <option value="cafe_bar">Café / Bar</option>
+                <option value="cafeteria">Cafeterías</option>
+                <option value="comedor">Comedores</option>
+                <option value="pizzeria">Pizzerías</option>
+                <option value="heladeria">Heladerías</option>
+                <option value="parrilla">Parrillas</option>
+                <option value="discoteca">Discotecas</option>
+                <option value="drugstore">Drugstores</option>
+                <option value="pasteleria">Pastelerías</option>
+                <option value="parador">Paradores</option>
+                <option value="otros">Otros</option>
+            </select>
+        </div>
+    </div>
 
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 
-
-    
-    <!-- Scripts -->
-    <script src="./MAPEO/scripts/script.js"></script>
-    <!-- <script src="densidadPoblacional.js"></script> -->
+    <script type="module" src="./MAPEO/scripts/app.js"></script>
 </body>
-
 </html>
