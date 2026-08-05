@@ -187,7 +187,6 @@ html, body {
         bottom: 5px !important;
         right: 5px !important;
         max-width: 70% !important;
-        background: rgba(255, 255, 255, 0.9) !important;
         z-index: 2000 !important;
     }
     
@@ -200,6 +199,6 @@ html, body {
         z-index: 1000;
     }
     .leaflet-control-scale {
-    margin-bottom: 30px !important; /* Ajusta este valor según necesites */
+    padding: 30px 20px !important;/* Ajusta este valor según necesites */
 }
 }
