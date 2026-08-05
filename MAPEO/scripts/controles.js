@@ -3,15 +3,10 @@
 export function agregarControles(map, capas) {
     // Control de capas
 
-    capas.argenmap.options.attribution = 
-        '<a href="http://www.ign.gob.ar/AreaServicios/Argenmap/IntroduccionV2" target="_blank">Instituto Geográfico Nacional</a>";'
-    
-    capas.satelital.options.attribution = 'Tiles © Esri';
-
     // Añadir attributions a las capas overlay
     capas.capaBarrios.options.attribution = '<a href="https://www.estadisticaneuquen.gob.ar/#/inicio">Dirección Provincial de Estadística y Censos de Neuquén</a>';
     capas.densityLayer.options.attribution = '<a href="https://censo.gob.ar/">Censo Nacional 2022</a>';
-    capas.areaEdificadaLayer.options.attribution = 'OpenBuildings dede GEE';
+    capas.areaEdificadaLayer.options.attribution = '<a href="https://sites.research.google/gr/open-buildings/">Open Buildings</a>';
     capas.urbanoLayer.options.attribution = '<a href="https://https://urbanochosma.wordpress.com/">Urbano Chosma</a>';
     capas.turismoCluster.options.attribution = '<a href="https://chosmalal.gob.ar/">Municipalidad de Chos Malal</a>';
 
@@ -28,7 +23,7 @@ export function agregarControles(map, capas) {
             'Turismo': capas.turismoCluster
         },
         {
-            collapsed: false,
+            collapsed: true,
             position: 'topright'
         }
     ).addTo(map);
@@ -37,15 +32,15 @@ export function agregarControles(map, capas) {
     map.removeLayer(capas.turismoCluster);
 
     // Control de visibilidad de turismo para mostrar/ocultar filtros
-    map.on('overlayadd', function(evento) {
-        if (evento.name === 'Turismo') {
-            document.getElementById('filtros').style.display = 'block';
-        }
-    });
+    // map.on('overlayadd', function(evento) {
+    //     if (evento.name === 'Turismo') {
+    //         document.getElementById('filtros').style.display = 'block';
+    //     }
+    // });
 
     map.on('overlayremove', function(evento) {
         if (evento.name === 'Turismo') {
-            document.getElementById('filtros').style.display = 'none';
+            //document.getElementById('filtros').style.display = 'none';
             document.getElementById('selectorRubro').value = 'todos';
         }
     });

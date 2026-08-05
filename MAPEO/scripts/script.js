@@ -19,7 +19,7 @@ var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest
     maxZoom: 30
 });
 
-barriosCHM = {
+var barriosCHM = {
 "type": "FeatureCollection",
 "name": "otroMapa",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
@@ -110,7 +110,7 @@ var capaBarrios = L.geoJson(barriosCHM, {
 
 // Densidad poblacional
 
-dne = {
+var dne = {
 "type": "FeatureCollection",
 "name": "densidadPoblacional",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
@@ -376,7 +376,7 @@ areaEdificadaLayer = L.geoJson(areaEdificada, {
     onEachFeature: onEachAreaEdificadaFeature
 });
 
-turismoCHM = {
+var turismoCHM = {
 "type": "FeatureCollection",
 "name": "resultado",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
@@ -1065,7 +1065,7 @@ var turismoLayer = L.geoJson(turismoCHM, {
         })
 
 
-urbano = {
+var urbano = {
   "type": "FeatureCollection",
   "name": "resultado",
   "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },

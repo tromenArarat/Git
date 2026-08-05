@@ -13,10 +13,7 @@ export function crearCapasBase(map) {
         'https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{-y}.png',
         {
             attribution:
-                '<a href="https://www.ign.gob.ar/" target="_blank">' +
-                'Instituto Geográfico Nacional</a> + ' +
-                '<a href="https://www.openstreetmap.org/copyright" target="_blank">' +
-                'OpenStreetMap</a>',
+                '<a href="https://www.ign.gob.ar/" target="_blank"> Instituto Geográfico Nacional</a>',
             minZoom: 3,
             maxZoom: 30
         }

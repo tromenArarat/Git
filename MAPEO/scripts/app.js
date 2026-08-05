@@ -19,15 +19,15 @@ async function iniciarAplicacion() {
         };
 
         // Ocultar el panel de filtros inicialmente
-        document.getElementById('filtros').style.display = 'none';
+        //document.getElementById('filtros').style.display = 'none';
 
         agregarControles(map, capas);
 
         const selector = document.getElementById('selectorRubro');
 
-        selector.addEventListener('change', evento => {
-            turismo.filtrarPorRubro(evento.target.value);
-        });
+        // selector.addEventListener('change', evento => {
+        //     turismo.filtrarPorRubro(evento.target.value);
+        // });
 
         console.log('Mapa inicializado correctamente');
     } catch (error) {

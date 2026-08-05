@@ -167,31 +167,36 @@ html, body {
     max-height: none !important;
 }
 
-/* Ajustes para pantallas muy pequeñas */
+
+
+/* Asegurar que la atribución sea visible */
+.leaflet-control-attribution {
+    background: rgba(255, 255, 255, 0.85) !important;
+    padding: 2px 8px !important;
+    border-radius: 4px !important;
+    font-size: 10px !important;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1) !important;
+    z-index: 1001 !important; /* Mayor que el panel de filtros (1000) */
+}
+
+/* En móviles, ajustar solo la atribución */
 @media (max-width: 480px) {
+    .leaflet-control-attribution {
+        font-size: 7px !important;
+        padding: 2px 6px !important;
+        bottom: 5px !important;
+        right: 5px !important;
+        max-width: 70% !important;
+        background: rgba(255, 255, 255, 0.9) !important;
+        z-index: 2000 !important;
+    }
+    
+    /* Asegurar que el panel de filtros no tape la atribución */
     .panel-filtros {
-        bottom: 25px !important;
+        bottom: 55px !important; /* Subir el filtro */
         left: 5px !important;
         padding: 4px 8px !important;
         max-width: 160px !important;
-    }
-    
-    .panel-filtros select {
-        font-size: 10px !important;
-        padding: 2px 4px !important;
-        min-width: 60px !important;
-        max-width: 80px !important;
-    }
-    
-    .leaflet-control-attribution {
-        font-size: 7px !important;
-        padding: 1px 4px !important;
-        line-height: 1.2 !important;
-    }
-    
-    .info-leyenda {
-        font-size: 9px !important;
-        padding: 4px 6px !important;
-        min-width: 80px !important;
+        z-index: 1000;
     }
 }

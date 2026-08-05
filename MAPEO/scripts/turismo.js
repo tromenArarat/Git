@@ -116,7 +116,7 @@ function crearMarcador(feature, latlng) {
 
 function crearCluster() {
     const cluster = L.markerClusterGroup({
-        maxClusterRadius: 80,
+        maxClusterRadius: 40,
         spiderfyOnMaxZoom: true,
         showCoverageOnHover: true,
         zoomToBoundsOnClick: true,
@@ -165,32 +165,32 @@ export async function crearCapaTurismo(map) {
         padding: [50, 50]
     });
 
-    function filtrarPorRubro(rubro) {
-        map.removeLayer(clusterActual);
+    // function filtrarPorRubro(rubro) {
+    //     map.removeLayer(clusterActual);
 
-        const nuevoCluster = crearCluster();
+    //     const nuevoCluster = crearCluster();
 
-        turismoLayer.eachLayer(layer => {
-            const rubroCapa = layer.feature?.properties?.rubro || 'otros';
+    //     turismoLayer.eachLayer(layer => {
+    //         const rubroCapa = layer.feature?.properties?.rubro || 'otros';
 
-            if (rubro === 'todos' || rubroCapa === rubro) {
-                nuevoCluster.addLayer(layer);
-            }
-        });
+    //         if (rubro === 'todos' || rubroCapa === rubro) {
+    //             nuevoCluster.addLayer(layer);
+    //         }
+    //     });
 
-        clusterActual = nuevoCluster;
-        map.addLayer(clusterActual);
+    //     clusterActual = nuevoCluster;
+    //     map.addLayer(clusterActual);
 
-        if (clusterActual.getLayers().length > 0) {
-            ajustarVista(map, clusterActual, {
-                padding: [50, 50]
-            });
-        }
-    }
+    //     if (clusterActual.getLayers().length > 0) {
+    //         ajustarVista(map, clusterActual, {
+    //             padding: [50, 50]
+    //         });
+    //     }
+    // }
 
     return {
         turismoLayer,
-        getCluster: () => clusterActual,
-        filtrarPorRubro
+        getCluster: () => clusterActual
+        //filtrarPorRubro
     };
 }
