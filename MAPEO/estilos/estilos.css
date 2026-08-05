@@ -13,28 +13,6 @@ html, body {
     left: 0;
 }
 
-.panel-filtros {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 1000;
-    background: white;
-    padding: 12px;
-    border-radius: 6px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.panel-filtros label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: bold;
-}
-
-.panel-filtros select {
-    min-width: 180px;
-    padding: 5px;
-}
-
 .cluster-circulo {
     width: 46px;
     height: 46px;
@@ -93,68 +71,8 @@ html, body {
     flex-shrink: 0;
 }
 
-/* Estilos para el filtro compacto */
-.panel-filtros {
-    position: absolute;
-    bottom: 20px;
-    left: 60px;
-    background: white;
-    padding: 8px 8px;
-    border-radius: 6px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    z-index: 1000;
-    display: none;
-    max-width: 300px; 
-    max-height: 25px;
-}
 
-.filtro-contenedor {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: nowrap; 
-}
 
-.panel-filtros select {
-    padding: 4px 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 13px;
-    background: white;
-    min-width: 120px;
-    max-width: 150px;  /* Select de tamaño limitado */
-    cursor: pointer;
-}
-.panel-filtros select:hover {
-    border-color: #999;
-}
-
-.panel-filtros select:focus {
-    outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
-}
-
-/* Opcional: hacer el filtro más pequeño en dispositivos móviles */
-@media (max-width: 768px) {
-    .panel-filtros {
-        bottom: 10px;
-        left: 10px;
-        padding: 6px 12px;
-        max-width: 200px;
-    }
-    
-    .panel-filtros label {
-        font-size: 11px;
-    }
-    
-    .panel-filtros select {
-        font-size: 11px;
-        padding: 3px 6px;
-        min-width: 80px;
-        max-width: 100px;
-    }
-}
 
 /* Quitar scroll del layer control */
 .leaflet-control-layers {
@@ -171,11 +89,9 @@ html, body {
 
 /* Asegurar que la atribución sea visible */
 .leaflet-control-attribution {
-    background: rgba(255, 255, 255, 0.85) !important;
     padding: 2px 8px !important;
     border-radius: 4px !important;
     font-size: 10px !important;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.1) !important;
     z-index: 1001 !important; /* Mayor que el panel de filtros (1000) */
 }
 
@@ -183,7 +99,7 @@ html, body {
 @media (max-width: 480px) {
     .leaflet-control-attribution {
         position: absolute !important;
-        bottom: 5px !important;
+        bottom: 25px !important;
         right: 150px !important;
         font-size: 7px !important;
         padding: 4px 8px !important;
@@ -194,7 +110,7 @@ html, body {
 
     .leaflet-control-scale {
         position: absolute !important;
-        bottom: 5px !important;
+        bottom: 25px !important;
         left: 5px !important;
         padding: 2px 8px !important;
         background: rgba(255, 255, 255, 0.85) !important;
