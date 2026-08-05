@@ -76,46 +76,44 @@ html, body {
 
 /* Quitar scroll del layer control */
 .leaflet-control-layers {
-    overflow: visible !important;
-    max-height: none !important;
+    overflow: visible;
+    max-height: none;
 }
 
 .leaflet-control-layers-list {
-    overflow: visible !important;
-    max-height: none !important;
+    overflow: visible;
+    max-height: none;
 }
 
 
 
 /* Asegurar que la atribución sea visible */
 .leaflet-control-attribution {
-    padding: 2px 8px !important;
-    border-radius: 4px !important;
-    font-size: 10px !important;
-    z-index: 1001 !important; /* Mayor que el panel de filtros (1000) */
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    z-index: 1001; /* Mayor que el panel de filtros (1000) */
 }
 
 /* En móviles, ajustar solo la atribución */
 @media (max-width: 480px) {
     .leaflet-control-attribution {
-        position: absolute !important;
-        bottom: 55px !important;
-        right: 150px !important;
-        font-size: 7px !important;
-        padding: 4px 8px !important;
-        max-width: 100% !important;
-        white-space: nowrap !important;
-        z-index: 2000 !important;
+        position:relative;
+        bottom: 55px;
+        right: 2px;
+        left:2px;
+        font-size: 7px;
+        padding: 4px 4px;
+        z-index: 2000;
     }
 
     .leaflet-control-scale {
-        position: absolute !important;
-        bottom: 680px !important;
-        left: 5px !important;
-        padding: 2px 8px !important;
-        background: rgba(255, 255, 255, 0.85) !important;
-        border-radius: 4px !important;
-        z-index: 1000 !important;
+        position: relative;
+        bottom: 55px;
+        left: 5px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        z-index: 1000;
     }
 
     .info-leyenda {

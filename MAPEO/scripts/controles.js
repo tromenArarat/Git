@@ -24,7 +24,7 @@ export function agregarControles(map, capas) {
         },
         {
             collapsed: true,
-            position: 'topright'
+            position: 'topleft'
         }
     ).addTo(map);
 
@@ -100,13 +100,13 @@ export function agregarControles(map, capas) {
 
     // Escala
     L.control.scale({
-        position: 'bottomleft',
+        position: 'topright',
         metric: true,
         imperial: false
     }).addTo(map);
 
     // Norte
-    var controlNorte = L.control({ position: 'topleft' });
+    var controlNorte = L.control({ position: 'topright' });
 
     controlNorte.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'info-norte');
@@ -139,7 +139,7 @@ export function agregarControles(map, capas) {
     }
 
     // Crear watermark y mantener referencia para poder quitar/volver a agregar
-    const watermarkControl = L.control.watermark({ position: 'topright' });
+    const watermarkControl = L.control.watermark({ position: 'topleft', size: 'small' });
     watermarkControl.addTo(map);
 
     // Ocultar el watermark cuando se abre el control de capas y volver a mostrarlo al cerrarlo
