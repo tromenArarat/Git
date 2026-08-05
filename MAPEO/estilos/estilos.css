@@ -182,11 +182,15 @@ html, body {
 /* En móviles, ajustar solo la atribución */
 @media (max-width: 480px) {
     .leaflet-control-attribution {
-        font-size: 7px !important;
-        padding: 30px 20px !important;
+        position: absolute !important;
         bottom: 5px !important;
         right: 5px !important;
+        font-size: 7px !important;
+        padding: 4px 8px !important;
         max-width: 70% !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
         z-index: 2000 !important;
     }
     
@@ -198,7 +202,14 @@ html, body {
         max-width: 160px !important;
         z-index: 1000;
     }
+
     .leaflet-control-scale {
-    padding: 30px 20px !important;/* Ajusta este valor según necesites */
-}
+        position: absolute !important;
+        bottom: 5px !important;
+        left: 5px !important;
+        padding: 2px 8px !important;
+        background: rgba(255, 255, 255, 0.85) !important;
+        border-radius: 4px !important;
+        z-index: 1000 !important;
+    }
 }
