@@ -115,8 +115,50 @@ export function agregarControles(map, capas) {
         return div;
     };
 
-    // 2. Añadirlo al mapa
+    // Añadirlo al mapa
     controlNorte.addTo(map);
+
+    // Marca de agua
+    L.Control.Watermark = L.Control.extend({
+        onAdd: function (map) {
+            var img = L.DomUtil.create('img');
+
+            img.src = './MAPEO/img/mano.png';
+            img.style.width = '200px';
+
+            return img;
+        },
+
+        onRemove: function (map) {
+            // Nothing to do here
+        }
+    });
+
+    L.control.watermark = function (opts) {
+        return new L.Control.Watermark(opts);
+    }
+
+    // Crear watermark y mantener referencia para poder quitar/volver a agregar
+    const watermarkControl = L.control.watermark({ position: 'topright' });
+    watermarkControl.addTo(map);
+
+    // Ocultar el watermark cuando se abre el control de capas y volver a mostrarlo al cerrarlo
+    const capasContainer = controlCapas.getContainer();
+    capasContainer.addEventListener('click', function() {
+        // esperar al cambio de clase que indica estado expandido
+        setTimeout(function() {
+            const expanded = capasContainer.classList.contains('leaflet-control-layers-expanded');
+            if (expanded) {
+                if (watermarkControl._map) {
+                    map.removeControl(watermarkControl);
+                }
+            } else {
+                if (!watermarkControl._map) {
+                    watermarkControl.addTo(map);
+                }
+            }
+        }, 0);
+    });
 
 }
 
