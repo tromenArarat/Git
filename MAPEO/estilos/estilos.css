@@ -183,7 +183,7 @@ html, body {
 @media (max-width: 480px) {
     .leaflet-control-attribution {
         font-size: 7px !important;
-        padding: 2px 6px !important;
+        padding: 30px 20px !important;
         bottom: 5px !important;
         right: 5px !important;
         max-width: 70% !important;
@@ -199,4 +199,7 @@ html, body {
         max-width: 160px !important;
         z-index: 1000;
     }
+    .leaflet-control-scale {
+    margin-bottom: 30px !important; /* Ajusta este valor según necesites */
+}
 }

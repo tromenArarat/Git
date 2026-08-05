@@ -38,12 +38,12 @@ export function agregarControles(map, capas) {
     //     }
     // });
 
-    map.on('overlayremove', function(evento) {
-        if (evento.name === 'Turismo') {
-            //document.getElementById('filtros').style.display = 'none';
-            document.getElementById('selectorRubro').value = 'todos';
-        }
-    });
+    // map.on('overlayremove', function(evento) {
+    //     if (evento.name === 'Turismo') {
+    //         //document.getElementById('filtros').style.display = 'none';
+    //         document.getElementById('selectorRubro').value = 'todos';
+    //     }
+    // });
 
     // Crear leyendas con la estructura correcta
     const leyendaBarrios = crearLeyenda('Barrios', getDatosBarrios());
@@ -104,6 +104,20 @@ export function agregarControles(map, capas) {
         metric: true,
         imperial: false
     }).addTo(map);
+
+    // Norte
+    var controlNorte = L.control({ position: 'topleft' });
+
+    controlNorte.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info-norte');
+        // Inserta tu imagen de la rosa de los vientos o flecha de norte
+        div.innerHTML = '<img src="./MAPEO/img/rosaDeLosVientos.png" style="width: 50px; height: 50px;">';
+        return div;
+    };
+
+    // 2. Añadirlo al mapa
+    controlNorte.addTo(map);
+
 }
 
 // Función genérica para crear leyendas
